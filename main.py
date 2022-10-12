@@ -101,6 +101,6 @@ def orders(crossing_num, order_id):
   return f'<p>You are checking flat knot {crossing_num}.{order_id}.</p>'
 
 
-# if __name__ == '__main__':
-    # app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 
