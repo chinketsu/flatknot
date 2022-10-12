@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <head>
+        <title> Flat knot table</title>
+    </head>
+    <body>
+<form action="/result" method="POST">
+
+    <h1> Choose flat knot crossing numbers: </h1>
+{% for i in range(list_num_len) %}
+    <label for="num{{ i }}" name="num{{ i }}">
+        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}">
+        {{ list_num[i] }}
+    </label>
+{% endfor %}
+    <br>
+    <h1> Choose flat knot invariants: </h1>
+{% for i in range(list_val_len) %}
+    <label for="val{{ i }}" name="val{{ i }}">
+        <input type="checkbox" id="val{{ i }}" name="val{{ i }}" value="{{ list_val[i] }}">
+        {{ list_valname[i] }}
+    </label>
+{% endfor %}
+
+    <br>
+    <h1> Click submit button to see the results: </h1>
+        <button class="btn btn-info btn-lg" type="submit" name="submit">Submit</button>
+</form>
+
+    </body>
+</html>
