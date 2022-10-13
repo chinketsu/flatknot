@@ -1,0 +1,58 @@
+body            { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif}
+a, h1, h2       { color: #377ba8; }
+h1, h2          { margin: 1; }
+h1              {width:max-content; border-bottom: 2px solid #eee,clear:both}
+h2              { font-size: 1.2em; }
+
+table.dataframe, .dataframe tr, .dataframe td {
+    /*background-color: #add8e6;*/
+    /*background-color: #77dd77;*/
+  border: 1px solid #C8C8C8;
+  /*border: none;*/
+  /*border-bottom: 1px solid #C8C8C8;*/
+  border-collapse: collapse;
+  text-align:left;
+  padding: 10px;
+  margin-bottom: 40px;
+  font-size: 0.9em;
+}
+
+tr:nth-child(odd){ background-color:#eee; }
+tr:nth-child(even){ background-color:#fff; }
+
+tr:hover            { background-color: #ffff99;}
+
+form{
+    border:2px solid #ddd;
+    padding:3vw;
+    display:flex;
+    flex-direction:row;
+    border-radius:10px;
+    display: inline-block;
+}
+
+
+label{
+    width:40%;
+    margin-bottom:15px;
+    border-bottom:1px solid #ddd;
+    float: left;
+    /*display: inline-block;*/
+    border: 1px solid #C8C8C8;
+    padding: 10px;
+    font-size: 0.9em;
+    background-color: #eee;
+    /*text-align: center;*/
+ 
+}
+label:hover{ background-color: #fff;}
+
+button {
+    font-size: 1.3em;
+    border: 2px solid #C8C8C8;
+    padding: 10px;
+    /*margin:25px;*/
+    display: block
+}
+
+button:hover{ background-color: #fff;}
