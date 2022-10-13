@@ -46,7 +46,7 @@ list_val = ['gcode',
             'cable_arr_poly']
 
 
-@app.route('/',methods=['POST'])
+@app.route('/',methods=['GET','POST'])
 def index():
     return render_template(
         'index.html',
