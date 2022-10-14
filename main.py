@@ -85,7 +85,7 @@ def result():
                 df= pd.read_csv(in_path,usecols=['name']+val_list, dtype=str)
                 dflst.append(df)
             data=pd.concat(dflst)
-    return render_template('table.html', tables=[data.to_html()], titles=[''])
+    return render_template('table.html', tables=[data.to_html(index=None)], titles=[''])
 
 
 @app.route('/error')
