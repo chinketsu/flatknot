@@ -1,6 +1,17 @@
-"""test Flask with this"""
+"""
+Wed oct 19
+Powered by Jie Chen.
+# main.py
+This is the main flask app
+To run this on local laptop:
+conda activate flask
+export FLASK_APP=main.py
+export FLASK_ENV=development
+flask run
+"""
 from flask import Flask, render_template, request
 import pandas as pd
+import checksymmetry
 
 app = Flask(__name__)
 
@@ -85,7 +96,7 @@ def result():
                 df= pd.read_csv(in_path,usecols=['name']+val_list, dtype=str)
                 dflst.append(df)
             data=pd.concat(dflst)
-    return render_template('table.html', tables=[data.to_html(index=None)], titles=[''])
+    return render_template('table.html', tables=[data.to_html(index=None)], titles=[])
 
 
 @app.route('/error')
@@ -99,6 +110,25 @@ def hello():
 @app.route('/flatknot/<int:crossing_num>/<int:order_id>')
 def orders(crossing_num, order_id):
     return f'<p>You are checking flat knot {crossing_num}.{order_id}.</p>'
+
+
+@app.route('/calculator', methods=['POST', 'GET'])
+def calculator():
+    var_1 = request.form.get("vgcode", type=str, default='O1+O2+O3+U1+U3+U2+')
+    var_2 = request.form.get("gcode", type=str, default='O1O2O3U1U3U2')
+    operation = request.form.get("operation")
+    if operation == 'Min representation':
+        result = checksymmetry.checkr2r1_recursive(var_2)
+    elif operation == 'Symmetries':
+        result = checksymmetry.checkmirrorimg(
+            checksymmetry.checkr2r1_recursive(var_2))
+    elif operation == 'R3 orbit':
+        result = checksymmetry.checkR3(
+            {checksymmetry.checkr2r1_recursive(var_2)})
+    else:
+        result = ''
+    entry = result
+    return render_template('calculator.html', entry=entry)
 
 
 if __name__ == '__main__':
