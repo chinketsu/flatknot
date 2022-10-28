@@ -130,6 +130,8 @@ def calculator():
                 {checksymmetry.checkr2r1_recursive(var_2)}))
         elif operation == 'Virtual knot to flat knot':
             result = checksymmetry.vk2fk(var_1)
+        else:
+            result= ''
 
     except:
         result = 'Please check your Gauss code'
