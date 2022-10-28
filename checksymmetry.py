@@ -110,6 +110,8 @@ def inc4dec3(gcode0):
 
 
 def mingcode(gcode):
+    if len(gcode)==0:
+        return ''
     crNum=int(len(gcode)/4)
     str0=(gcode[0::2]+gcode[0::2]).replace('U','1').replace('O','0')
     lst=[int(str0[i:i+2*crNum]) for i in range(2*crNum)]
@@ -175,7 +177,7 @@ def checkmirrorimg(gcode):
         barcode="Same"
     if barinv in leastset:
         barinv="Same"
-    return "inv:"+ minlydon(checkR3({invcode}))+",bar:"+ minlydon(checkR3({barcode}))+",barinv:"+ minlydon(checkR3({barinv}))
+    return "inv: "+ minlydon(checkR3({invcode}))+"\n bar: "+ minlydon(checkR3({barcode}))+"\n barinv: "+ minlydon(checkR3({barinv}))
 
 
 def minlydon(r3set):
@@ -257,7 +259,6 @@ def checkr2r1_only_one_move(gcode0):
                     else: 
                         # print('careful: '+gcode0+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
-
     return mingcode(gcode0)
 
 
@@ -270,6 +271,15 @@ def checkr2r1_recursive(gcode0):
         return checkr2r1_recursive(newcode)
 
 
+def vk2fk(strFlat0):
+    strFlat='g'+strFlat0+'g'
+    rank_num=len(strFlat)
+    switcher ={'O': 'U', 'U':'O'}
+    for i in range(rank_num):
+        if i%3==0 and strFlat[i]=='-':
+            strFlat=strFlat[:i-2] + switcher[strFlat[i-2]]+ strFlat[i-1:]
+    return strFlat[1:].replace('-','').replace('+','')[:-1]
+
 
 if __name__ == "__main__":
     for crNum in range(3,8):
@@ -280,4 +290,3 @@ if __name__ == "__main__":
         df = pd.read_csv(in_path,dtype=str,usecols=['name','gcode'])
         df2 = df.merge(df['gcode'].apply(checkmirrorimg),left_index=True, right_index=True)
         df2.to_csv(out_path,index=None)
-
