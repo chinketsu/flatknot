@@ -112,21 +112,27 @@ def orders(crossing_num, order_id):
     return f'<p>You are checking flat knot {crossing_num}.{order_id}.</p>'
 
 
+
+
 @app.route('/calculator', methods=['POST', 'GET'])
 def calculator():
     var_1 = request.form.get("vgcode", type=str, default='O1+O2+O3+U1+U3+U2+')
     var_2 = request.form.get("gcode", type=str, default='O1O2O3U1U3U2')
     operation = request.form.get("operation")
-    if operation == 'Min representation':
-        result = checksymmetry.checkr2r1_recursive(var_2)
-    elif operation == 'Symmetries':
-        result = checksymmetry.checkmirrorimg(
-            checksymmetry.checkr2r1_recursive(var_2))
-    elif operation == 'R3 orbit':
-        result = checksymmetry.checkR3(
-            {checksymmetry.checkr2r1_recursive(var_2)})
-    else:
-        result = ''
+    try:
+        if operation == 'Min representation':
+            result = checksymmetry.checkr2r1_recursive(var_2)
+        elif operation == 'Symmetries':
+            result = checksymmetry.checkmirrorimg(
+                checksymmetry.checkr2r1_recursive(var_2))
+        elif operation == 'R3 orbit':
+            result = str(checksymmetry.checkR3(
+                {checksymmetry.checkr2r1_recursive(var_2)}))
+        elif operation == 'Virtual knot to flat knot':
+            result = checksymmetry.vk2fk(var_1)
+
+    except:
+        result = 'Please check your Gauss code'
     entry = result
     return render_template('calculator.html', entry=entry)
 
