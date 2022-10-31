@@ -2,31 +2,83 @@
 <html lang="en">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
     <head>
-        <title> Flat knot table</title>
+        <title> Knot Flat Page</title>
     </head>
     <body>
-<form action="/result" method="POST">
+        <header>
 
-    <h1> Choose flat knot crossing numbers: </h1>
+        </header>
+
+<div class="header">
+      Welcome to KnotFlatSite
+</div>
+
+<div class="topnav">
+  <a href="#about">About</a>
+  <a href="/">Invariant Table</a>
+  <a href="/calculator">Calculator(old ver.)</a>
+  <a href="/checker">Calculator</a>
+  <a href="/crossref">Crossref virtual knots</a>
+  <a href="/diagram ">Diagram Drawer</a>
+  <!--<a href="/glossary">Glossary</a>-->
+  <a class='split' href="#cite">Please cite KnotFlatSite</a>
+</div>
+
+
+
+
+<form action="/result" method="POST">
+    <label class='invtype' for="Choose flat knot crossing numbers" name="cr">
+Flat knot crossing numbers
+        <button class="submit" type="submit" name="submit">Submit</button>
+    </label>
 {% for i in range(list_num_len) %}
-    <label for="num{{ i }}" name="num{{ i }}">
+    <label class='inv' for="num{{ i }}" name="num{{ i }}">
         <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}">
         {{ list_num[i] }}
     </label>
 {% endfor %}
     <br>
-    <h1> Choose flat knot invariants: </h1>
-{% for i in range(list_val_len) %}
-    <label for="val{{ i }}" name="val{{ i }}">
-        <input type="checkbox" id="val{{ i }}" name="val{{ i }}" value="{{ list_val[i] }}">
-        {{ list_valname[i] }}
+{% for invcls in dict_inv.keys() %}
+    <label class='invtype' for="invcho" name="{{ invcls }}">
+    {{ invcls }}
+        <button class="submit" type="submit" name="submit">Submit</button>
     </label>
+    {% for invname in dict_inv[invcls].keys() %}
+    <label class='inv' for="{{ invname }}" name="{{ invname }}">
+        <input type="checkbox" id="{{ invname }}" name="{{ invname }}" value="{{ invname }}">
+        <a class='intable' href= '/inv/{{invname}}'> {{ dict_inv[invcls][invname] }} </a>
+    </label>
+    {% endfor %}
 {% endfor %}
 
-    <br>
-    <h1> Click submit button to see the results: </h1>
-        <button class="btn btn-info btn-lg" type="submit" name="submit">Submit</button>
 </form>
+
+<div class='divider'>About</div>
+<div class='footer' id='about'>
+
+Please email
+  <a href="mailto:chenj293@mcmaster.ca">chenj293@mcmaster.ca</a> if you have any comments or request for certain data.
+  <br>
+Your comments are very appreciated. 
+</div>
+<div class='divider'>How to cite</div>
+<div class='footer' id='cite'>
+If you use KnotFlatSite in your work, 
+please cite it as:<br><br>
+H.U. Boden, J.  Chen and L. White,
+<i>KnotFlatSite: Table of Flat Knot Invariants</i>,
+flatknot.heroku.com.
+<br>
+<br>
+Bibtex: <br>
+@misc{
+knotflat,<br>
+	Author = { H.U. Boden, J.  Chen and L. White},<br>
+	howpublished = {flatknot.heroku.com},<br>
+	Title = {KnotFlatSite: Table of Flat Knot Invariants},<br>
+}
+</div>
 
     </body>
 </html>
