@@ -20,6 +20,7 @@ app.config['SECRET_KEY'] = '0000'
 
 
 list_num = ['3,4,5','6','7']
+aclist_num = ['5,6,7','8','9','10']
 
 diag_inv={
     'gcode': 'Gauss code',
@@ -28,7 +29,7 @@ diag_inv={
     'inv': 'Gauss code of inv(K)',
     'bar': 'Gauss code of bar(K)',
     'invbar': 'Gauss code of invbar(K)',
-    'symmetry_type': 'diagrammatic symmetry type'}
+    'diag_sym_type': 'diagrammatic symmetry type'}
 
 matrix_inv={
     'bsMtxNoSrt':'based matrix from Gauss code',
@@ -39,7 +40,7 @@ matrix_inv={
     'inv_phi': 'phi of inv(K)',
     'bar_phi': 'phi of bar(K)',
     'invbar_phi': 'phi of invbar(K)',
-    'symmetry_type_phi': 'symmetry type of based matrix'}
+    'phi_sym_type': 'symmetry type of based matrix'}
 
 
 poly_inv={
@@ -60,6 +61,7 @@ dict_inv={ 'diagrammatic invariants': diag_inv,
 
 all_inv= sum([list(value.keys()) for value in dict_inv.values()],[])
 
+all_invname= sum([list(value.values()) for value in dict_inv.values()],[])
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -73,6 +75,20 @@ def index():
         # poly_inv=poly_inv,
         # concor_inv=concor_inv,
     )
+
+@app.route('/ac',methods=['GET','POST'])
+def acindex():
+    return render_template(
+        'acindex.html',
+        list_num=aclist_num,
+        list_num_len=len(aclist_num),
+        dict_inv=dict_inv,
+        # diag_inv=diag_inv,
+        # matrix_inv=matrix_inv,
+        # poly_inv=poly_inv,
+        # concor_inv=concor_inv,
+    )
+
 
 
 @app.route('/inv/<invname>')
@@ -91,6 +107,16 @@ def drawer(gcode):
     )
 
 
+@app.route('/crossref/<int:pagenum>')
+def crossref(pagenum):
+    return render_template(
+        'crossref.html',
+        tables=[pd.read_csv('./csv/crossref.csv',dtype=str)[pagenum*200:pagenum*200+200].to_html(
+                index=None,
+                render_links=True,
+                escape=False)], 
+            pagenum=pagenum,
+    )
 
 
 @app.route('/result',methods=['POST', 'GET'])
@@ -117,10 +143,69 @@ def result():
             for crNum in num_list:
                 print(crNum)
                 in_path = './csv/fk_%s.csv' % (crNum)
-                df= pd.read_csv(in_path,usecols=['name']+val_list, dtype=str)
+                df= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
                 dflst.append(df)
-            data=pd.concat(dflst)
-    return render_template('table.html', tables=[data.to_html(index=None,render_links=True,escape=False)], titles=[])
+    data=pd.concat(dflst)
+    morelink=data.shape[0]>200
+    data=data[0*200:0*200+200]
+    return render_template('table.html',
+            tables=[data[['namelink']+val_list].to_html(
+                index=None,
+                render_links=True,
+                escape=False)], 
+            # titles=[],
+            pagenum=0,
+            num_list=num_list,
+            val_list=val_list,
+            morelink=morelink
+            )
+
+@app.route('/result/<int:pagenum>/<numlist>/<invlist>')
+def result_i(pagenum,numlist,invlist):
+    num_list=numlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
+    if invlist=='[]':
+        val_list=[]
+    else:
+        val_list=invlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
+    dflst=[]
+    for crNum in num_list:
+        print(crNum)
+        in_path = './csv/fk_%s.csv' % (crNum)
+        df= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
+        dflst.append(df)
+    data=pd.concat(dflst)
+    morelink=data.shape[0]>200*pagenum
+    data=data[pagenum*200:pagenum*200+200]
+    return render_template('table.html',
+            tables=[data[['namelink']+val_list].to_html(
+                index=None,
+                render_links=True,
+                escape=False)],
+            pagenum=pagenum,
+            num_list=num_list,
+            val_list=val_list,
+            morelink=morelink
+            )
+
+
+@app.route('/download/<numlist>/<invlist>')
+def download(numlist,invlist):
+    return '''
+    <h>Coming Soon!</h>
+    <div><a href='/#contact'>
+    Email us if you need it sooner.
+    </a>
+    </div>
+    '''
+
+
+
+
+
+
+@app.route('/citeus')
+def citeus():
+    return render_template( 'citeus.html')
 
 
 @app.route('/error')
@@ -132,13 +217,37 @@ def hello():
     '''
 
 
-@app.route('/flatknot/<int:crossing_num>.<int:order_id>')
-def orders(crossing_num, order_id):
+@app.route('/flatknot/<knotname>')
+def flatknot(knotname):
+    if knotname=='0':
+        return render_template(
+            'flatknot.html',
+            knotname=knotname,
+            r3_orbit='',
+            content='You are checking the trivial flat knot. All the invariants are trivial as well.',
+               )
+    if int( knotname[0] ) <6:
+        in_path = './csv/fksame_%s.csv' % (5)
+    elif int( knotname[0] )<8:
+        in_path = './csv/fksame_%s.csv' % knotname[0]
+    df= pd.read_csv(in_path, dtype=str)
+    
+    df=df[df['name']==knotname]
+    r3_orbit=df.iloc[0]['r3_orbit']
+    content= 'Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
+            '\n'+'Knots with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
+             'Outer characteristic polynomial of the knot is: '+\
+             df.iloc[0]['outPoly'] +'\n'+'Knots with same outer characteristic polynomial are :'+df.iloc[0]['same_outpoly']+'\n'
+    if int( knotname[0] )<7:
+        content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
+            +'\n'+'Knots with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']+'\n'
     return render_template(
         'flatknot.html',
-        crossing_num= crossing_num, 
-        order_id= order_id,
-    )
+        knotname=knotname,
+        r3_orbit=r3_orbit,
+        content=content,
+           )
+
 
 
 
@@ -163,7 +272,12 @@ def calculator():
     except:
         result = 'Please check your Gauss code'
     entry = result
-    return render_template('calculator.html', entry=entry)
+    return render_template('calculator.html',
+            gcode=var_2,
+            entry=entry)
+
+
+
 
 
 if __name__ == '__main__':
