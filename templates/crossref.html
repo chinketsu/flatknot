@@ -2,11 +2,13 @@
 <html lang="en">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
     <head>
-        <title> Table of flat knot invariants </title>
+        <title> 
+       Crossref FK VK
+ </title>
     </head>
 
 <div class="header">
-        Table of flat knot invariants
+       Cross-reference of flat knots and virtual knots
 </div>
 
 {% include "topnavbar.html" %}
@@ -24,23 +26,32 @@
             </table>
         </div>
 
+
 <div class="topnav">
         {% if pagenum >0 %}
-<a href='/result/{{pagenum-1}}/{{num_list}}/{{val_list}}' > Previous </a>
+<a href='/crossref/{{pagenum-1}}' > Previous </a>
         {% else%}
 <a href='#top' > Top of Page </a>
 
         {% endif %}
 
-        {% if morelink==True %}
-<a href='/result/{{pagenum+1}}/{{num_list}}/{{val_list}}' > Next </a>
+        {% if  pagenum<465%}
+<a href='/crossref/{{pagenum+1}}' > Next </a>
         {% endif %}
 
-<a href='/download/{{num_list}}/{{val_list}}' > Download the csv file </a>
+        {% if  pagenum<455%}
+<a href='/crossref/{{pagenum+10}}' > Next 10</a>
+        {% endif %}
+
+        {% if  pagenum<365%}
+<a href='/crossref/{{pagenum+100}}' > Next 100</a>
+        {% endif %}
+
+<a href='#' > Download will come soon</a>
+
+
   <a class='split' href="/citeus">Please cite KnotFlatSite</a>
 </div>
-
-
 
 
     </body>
