@@ -4,7 +4,7 @@ body {
     margin-right:5%;
 }
 a.intable       { color: #000000; }
-h2       { color: #377ba8; }
+h2       { color:  #550022; }
 h1, h2          { margin: 1; }
 h1              {color:#7A003C; width:max-content; border-bottom: 2px solid #eee,clear:both}
 h2              { font-size: 1.2em; }
@@ -24,22 +24,23 @@ h2              { font-size: 1.2em; }
 .divider {
   text-align: left;
     margin-top:3em;
-    width:110%;
+    width:100%;
     height:1.5em;
   text-align: center;
-  padding: 1px;
+  padding: 3px;
   background-color: #940049;
   color: white;
     display: inline-block;
+  font-size: 0.7em;
 }
 
 .footer {
-    width:110%;
+  width:100%;
   text-align: left;
   padding: 3px;
   background-color: #666666;
   color: white;
-    display: inline-block;
+  display: inline-block;
   font-size: 0.8em;
 }
 /* Create a top navigation bar with a black background color  */
@@ -57,6 +58,7 @@ h2              { font-size: 1.2em; }
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  border-right:1px solid #666666;
 }
 
 /* Change the color of links on hover */
@@ -65,12 +67,20 @@ h2              { font-size: 1.2em; }
   color: black;
 }
 
+.topnav a.split:hover {
+  background-color: #ffbf3d;
+  color: black;
+}
+
+
 /* Create a right-aligned (split) link inside the navigation bar */
 .topnav a.split {
   float: right;
   background-color: #666666;
   color: #ffbf3d;
+  border-left:1px solid #ddd;
 }
+
 
 table.dataframe, .dataframe tr, .dataframe td {
     /*background-color: #add8e6;*/
