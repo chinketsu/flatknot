@@ -547,7 +547,7 @@ def findgcode(gcode):
     crNum=int(len(gcode)/4)
     if 3<=crNum<=5:
         crNum=5
-    df= pd.read_csv('./csv/fk_%d.csv' %crNum,usecols=['name','gcode'], dtype=str)
+    df= pd.read_csv('./csv/fksame_%d.csv' %crNum,usecols=['name','gcode'], dtype=str)
     if crNum>8:
         return 'Not yet updated for cr>=8'
     return df[df.gcode==gcode].iloc[0]['name']
