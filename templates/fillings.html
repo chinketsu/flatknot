@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<!--<link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">-->
+
+
+
+<script src="https://tikzjax.com/v1/tikzjax.js"></script>
+    <body>
+             <table border="1" class="dataframe">
+
+  <tbody><tr>
+    {% for tiztxt in text %}
+        <td>
+<script type="text/tikz"> {{tiztxt}} </script>
+        </td>
+    {% endfor %}
+      </tr>
+  </tbody> </table> 
+    </body>
+</html>

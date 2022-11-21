@@ -25,8 +25,11 @@
         </div>
 
 <div class="topnav">
-        {% if pagenum >0 %}
+        {% if pagenum >1 %}
 <a href='/result/{{pagenum-1}}/{{num_list}}/{{val_list}}' > Previous </a>
+
+<a href='/result/{{1}}/{{num_list}}/{{val_list}}' > Page 1 </a>
+
         {% else%}
 <a href='#top' > Top of Page </a>
 
@@ -34,6 +37,22 @@
 
         {% if morelink==True %}
 <a href='/result/{{pagenum+1}}/{{num_list}}/{{val_list}}' > Next </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/result/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 10  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/result/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 50  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/result/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 100  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/result/0/{{num_list}}/{{val_list}}' > End </a>
         {% endif %}
 
 <a href='/download/{{num_list}}/{{val_list}}' > Download the csv file </a>

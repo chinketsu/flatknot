@@ -4,12 +4,13 @@
     <body>
 
 <div class="header">
-      Welcome to KnotFlatSite
+      Welcome to FlatKnotInfo
 </div>
 
 
 
 {% include "topnavbar.html" %}
+{% include "top2navbar.html" %}
 
 
 <form action="/result" method="POST">
@@ -19,7 +20,11 @@ Flat knot crossing numbers
     </label>
 {% for i in range(list_num_len) %}
     <label class='inv' for="num{{ i }}" name="num{{ i }}">
-        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}">
+    {% if i < 3 %}
+        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}" checked>
+        {% else %}
+        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}" check>
+    {% endif %}
         {{ list_num[i] }}
     </label>
 {% endfor %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <body>
+
+
+
+            {% if question2 != '' %}
+<form method="post" width='100%'>
+            <label class='invtype' for="input" name="input"> {{question2}} </label>
+        <input type="text" name="gcode"  size="100%" value="{{ request.form['gcode'] }}" placeholder="&nbsp;Example:  {{placeholdertext}} &nbsp;">
+                <br>
+                <br>
+        <button class="leftsubmit" type="submit" name="submit">Check</button>
+
+</form>
+ <table border="1" class="dataframe">
+  <tbody>
+       {% for line in content.split('\n') %}
+    <tr> <td> {{ line }} </td> </tr>
+        {% endfor %}
+    <tr> <td><a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
+
+        <tr><td>
+        The corresponding diagrams are:
+        </td></tr>       
+       {% for diag in todraw %}
+        <tr><td>
+        <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
+        </td></tr>       
+        {% endfor %}
+  </tbody>
+</table>
+            {% endif %}
+    </body>
+
+</html>

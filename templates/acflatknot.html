@@ -16,18 +16,27 @@
 
     <body>
         <h1>
-        Flat knot {{knotname}}
+        Amost Classical Flat knot {{knotname}}
         </h1>
 
              <table border="1" class="dataframe">
 
-  <tbody>
-       {% for line in content.split('\n') %}
-    <tr> <td> {{ line }} </td> </tr>
-        {% endfor %}
-
 
 {% if knotname!='0' %}
+   <div align="center">
+            <table>
+                <h1>
+                <!--Displaying the converted table-->
+                     {% for table in tables %}
+                    {{ table|safe }}
+                    {% endfor %}
+                </h1> 
+            </table>
+        </div>
+
+
+  <tbody>
+{% if r3_orbit!='' %}
         <tr><td>
 The R3 orbit of minmal crossing diagrams contains:
         <!--</td></tr>        -->
@@ -53,12 +62,13 @@ The R3 orbit of minmal crossing diagrams contains:
         <tr><td>
         The invbar(K) is
         <embed type="text/html" src="/diagram/{{invbar}}" width=auto height=auto>
-        </td></tr>      
+        </td></tr>
     {% endif %}
-        <tr><td>
 <!--<a href="/fillings/{{gcode}}/{{fillings}}"> Click here to check the fillings associated to the algebraic genus</a>-->
+{% endif %}
+        <tr><td>
         The fillings associated to the algebraic genus:
-        <embed type="text/html" src="/fillings/{{gcode}}/{{fillings}}" width="2000" height="111">
+        <embed type="text/html" src="/fillings/{{gcode}}/{{fillings}}" width="2000" height="131">
         </td></tr>
         <tr><td>
         <a href="/fillings/{{gcode}}/{{fillings}}"> Or check here: </a>
@@ -72,20 +82,6 @@ The R3 orbit of minmal crossing diagrams contains:
   <!--[><a class='split' href="/citeus">Please cite KnotFlatSite</a><]-->
 <!--</div>-->
 
-
-{% if knotname!='0' %}
-        <div align="center">
-            <table>
-                <h1>
-                <!--Displaying the converted table-->
-                     {% for table in tables %}
-                    {{ table|safe }}
-                    {% endfor %}
-                </h1> 
-            </table>
-        </div>
-
-{% endif %}
 
 
 
