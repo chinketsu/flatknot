@@ -19,11 +19,14 @@
        {% for line in content.split('\n') %}
     <tr> <td> {{ line }} </td> </tr>
         {% endfor %}
-    <tr> <td><a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
+
+        {% if name != '' %}
+    <tr> <td>The flat knot name is: <a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
+        {% endif %}
 
         <tr><td>
         The corresponding diagrams are:
-        </td></tr>       
+        </td></tr>
        {% for diag in todraw %}
         <tr><td>
         <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>

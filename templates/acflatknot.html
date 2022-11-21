@@ -16,14 +16,10 @@
 
     <body>
         <h1>
-        Amost Classical Flat knot {{knotname}}
+        Amost Classical Flat knot ac{{knotname}}
         </h1>
 
-             <table border="1" class="dataframe">
-
-
 {% if knotname!='0' %}
-   <div align="center">
             <table>
                 <h1>
                 <!--Displaying the converted table-->
@@ -32,10 +28,12 @@
                     {% endfor %}
                 </h1> 
             </table>
-        </div>
+{% endif %}
 
 
-  <tbody>
+             <table border="1" class="dataframe"><tbody>
+{% if knotname!='0' %}
+
 {% if r3_orbit!='' %}
         <tr><td>
 The R3 orbit of minmal crossing diagrams contains:
@@ -64,23 +62,19 @@ The R3 orbit of minmal crossing diagrams contains:
         <embed type="text/html" src="/diagram/{{invbar}}" width=auto height=auto>
         </td></tr>
     {% endif %}
-<!--<a href="/fillings/{{gcode}}/{{fillings}}"> Click here to check the fillings associated to the algebraic genus</a>-->
+
 {% endif %}
         <tr><td>
         The fillings associated to the algebraic genus:
-        <embed type="text/html" src="/fillings/{{gcode}}/{{fillings}}" width="2000" height="131">
+        <embed type="text/html" src="/fillings/{{gcode}}/{{fillings}}" width="1200" height=auto>
         </td></tr>
         <tr><td>
-        <a href="/fillings/{{gcode}}/{{fillings}}"> Or check here: </a>
+        <a href="/fillings/{{gcode}}/{{fillings}}"> Or check here to see the fillings </a>
         </td></tr>
 {% endif %}
 
   </tbody> </table> 
 
-<!--<div class="topnav">-->
-<!--<a href='#top' > Top of Page </a>-->
-  <!--[><a class='split' href="/citeus">Please cite KnotFlatSite</a><]-->
-<!--</div>-->
 
 
 
