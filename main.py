@@ -481,7 +481,6 @@ def acflatknot(knotname):
     fillings=df2[df2['name']==knotname].iloc[0]['fillings']
     gcode=df2[df2['name']==knotname].iloc[0]['gcode']
     data=df2[df2['name']==knotname].transpose().reset_index().rename(columns={0:'','index':''})
-
     if knotname[:2]=='10':
         return render_template(
             'acflatknot.html',
@@ -496,10 +495,7 @@ def acflatknot(knotname):
             tables=[data.to_html(
                     index=None,
                     render_links=True,
-                    escape=False)],
-               )
-
-
+                    escape=False)])
     return render_template(
         'acflatknot.html',
         knotname=knotname,
@@ -545,11 +541,11 @@ def acflatknot(knotname):
 
 def findgcode(gcode):
     crNum=int(len(gcode)/4)
+    if crNum>=8:
+        return ''
     if 3<=crNum<=5:
         crNum=5
     df= pd.read_csv('./csv/fksame_%d.csv' %crNum,usecols=['name','gcode'], dtype=str)
-    if crNum>8:
-        return 'Not yet updated for cr>=8'
     return df[df.gcode==gcode].iloc[0]['name']
 
 
@@ -573,7 +569,7 @@ def calculatorpage2(question):
     if question== 'gvk2fk':
         question2='Please input the Gauss code for virtual knot:'
         placeholdertext='O1+O2+O3+U1+U3+U2+'
-        ifchecked1='checked'
+        # ifchecked1='checked'
         if gcode != '':
             fgcode=checksymmetry.vk2fk(gcode)
             mingcode= checksymmetry.checkr2r1_recursive_orbit(fgcode)
@@ -583,19 +579,16 @@ def calculatorpage2(question):
                     + gcode + '.\nIt projects to flat knot diagram '\
                     + fgcode+'.\n Its minimal representation is '\
                     + mingcode+'.\n Its minimal sibling is '\
-                    +minsibling+'.\n The flat knot name is:'
+                    +minsibling+'.\n'
                 todraw=[fgcode,mingcode,minsibling]
                 name=findgcode(minsibling)
             else:
                 content == r'Your input is virtual knot '\
                     + gcode + '.\nIt projects to the trivial flat knot.'
-
-
-
     elif question== 'gfk2fk':
         question2='Please input the Gauss code for flat knot:'
         placeholdertext='O1O2O3U1U3U2'
-        ifchecked2='checked'
+        # ifchecked2='checked'
         if gcode != '':
             mingcode= checksymmetry.checkr2r1_recursive_orbit(gcode)
             if mingcode !='':
@@ -603,28 +596,25 @@ def calculatorpage2(question):
                 content = r'Your input is flat knot '\
                     + gcode+'.\n Its minimal representation is '\
                     + mingcode+'.\n Its minimal sibling is '\
-                    +minsibling+'.\n The flat knot name is:'
+                    +minsibling+'.\n '
                 todraw=[gcode,mingcode,minsibling]
                 name=findgcode(minsibling)
             else:
                 content = r'Your input is flat knot '\
                     + gcode + ',\n which is the trivial flat knot.'
-
-
     elif question== 'nfk2fk':
         question2='Please input a flat knot name here'
         placeholdertext='5.22'
-        ifchecked3='checked'
+        # ifchecked3='checked'
         content= "If your input is valid, the information of the flat knot is:"
         name=gcode
-
-
-    return render_template('calculatorpage2.html',
-            name=name,
-            question2=question2,
-            todraw=todraw,
-            content=content,
-            placeholdertext=placeholdertext)
+    return render_template(
+        'calculatorpage2.html',
+        name=name,
+        question2=question2,
+        todraw=todraw,
+        content=content,
+        placeholdertext=placeholdertext)
 
 
 
