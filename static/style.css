@@ -8,6 +8,9 @@ h2       { color:  #550022; }
 h1, h2          { margin: 1; }
 h1              {color:#7A003C; width:max-content; border-bottom: 2px solid #eee,clear:both}
 h2              { font-size: 1.2em; }
+embed {
+    margin-left:0%;
+}
 
 .header {
     /*width:83.5%;*/
@@ -82,6 +85,32 @@ h2              { font-size: 1.2em; }
 }
 
 
+/* Create a top navigation bar with a black background color  */
+.topnav2 {
+    /*width:83.5%;*/
+  background-color: #bbb;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav2 a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  border-right:1px solid #666666;
+}
+
+/* Change the color of links on hover */
+.topnav2 a:hover {
+  background-color: #eee;
+  color: black;
+}
+
+
+
 table.dataframe, .dataframe tr, .dataframe td {
     /*background-color: #add8e6;*/
     /*background-color: #77dd77;*/
@@ -90,6 +119,7 @@ table.dataframe, .dataframe tr, .dataframe td {
   /*border-bottom: 1px solid #C8C8C8;*/
   border-collapse: collapse;
   text-align:left;
+  vertical-align: middle;
   padding: 10px;
   margin-bottom: 40px;
   font-size: 0.9em;
@@ -104,7 +134,8 @@ tr:nth-child(odd){ background-color:#eee; }
 tr:nth-child(even){ background-color:#fff; }
 
 tr:hover{ background-color: #ffff99;}
-td:active{color:red}
+/*td:active{color:red}*/
+
 
 form{
   margin-top: 3em;
@@ -157,15 +188,32 @@ label.inv{
 
 label.inv:hover{ background-color: #fff;}
 
-button.submit{
+button{
     float: right;
     font-size: 0.9em;
     border: 2px solid #C8C8C8;
-    border-radius: 20%;;
+    margin: 1px;
+    border-radius: 15%;;
     padding: 5px;
     display: inline-block;
-    background-color: #ffcc33;
+    background-color: #FDBF57;
 }
 
-button.submit:hover{ background-color: #fff;}
+button:hover{
+    background-color: #FFD100;
+    border: 3px solid #C8C8C8;
+    margin: 0px;
+}
+
+button.submit{
+    float: right;
+}
+
+button.leftsubmit{
+    float: left;
+}
+
+
+
+
 
