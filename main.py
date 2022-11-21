@@ -597,7 +597,7 @@ def calculatorpage2(question):
                     + gcode+'.\n Its minimal representation is '\
                     + mingcode+'.\n Its minimal sibling is '\
                     +minsibling+'.\n '
-                todraw=[gcode,mingcode,minsibling]
+                todraw=[mingcode,minsibling]
                 name=findgcode(minsibling)
             else:
                 content = r'Your input is flat knot '\
