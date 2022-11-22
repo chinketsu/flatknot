@@ -62,6 +62,8 @@ dict_inv={ 'diagrammatic invariants': diag_inv,
     'polynomial invariants': poly_inv,
     'concordance invariants': concor_inv,}
 
+all_dict = {**diag_inv, **matrix_inv, **poly_inv, **concor_inv}
+
 
 all_inv= sum([list(value.keys()) for value in dict_inv.values()],[])
 
@@ -428,16 +430,20 @@ def flatknot(knotname):
 
         df=df[df['name']==knotname]
         content='Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
-            '\n'+'Knots (up to 7 crossings) with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
+            '\n'+'Flat knots (up to 7 crossings) with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
+            'Arrow polynomial of the knot is: '+df.iloc[0]['arrowpoly'] +'\n'+\
+            'Flat knots (up to 7 crossings) with same arrow polynomial are :'+df.iloc[0]['same_arrowpoly']+'\n'+\
              'Outer characteristic polynomial of the knot is: '+\
-             df.iloc[0]['outPoly'] +'\n'+'Knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outPoly']+'\n'
+             df.iloc[0]['outPoly'] +'\n'+'Flat knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outPoly']+'\n'
         if int(knotname[0])<7:
             content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
-            +'\n'+'Knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
+            +'\n'+'Flat knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
             +'\n'+'Virtual knots (up to 6 crossings) projecting to this knot are :'+df.iloc[0]['sameflatknot']
         fillings=df.iloc[0]['fillings']
         gcode=df.iloc[0]['gcode']
-        data=df[all_inv].transpose().reset_index().rename(columns={0:'','index':''})
+        data=df[all_inv].transpose().reset_index().rename(columns={0:'value'})
+        data['invariant']=data['index'].apply(lambda x: all_dict[x])
+        data=data[['invariant','value']]
         return render_template(
             'flatknot.html',
             knotname=knotname,
