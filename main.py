@@ -482,7 +482,9 @@ def acflatknot(knotname):
     df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
     fillings=df2[df2['name']==knotname].iloc[0]['fillings']
     gcode=df2[df2['name']==knotname].iloc[0]['gcode']
-    data=df2[df2['name']==knotname].transpose().reset_index().rename(columns={0:'','index':''})
+    data=df2[all_inv].transpose().reset_index().rename(columns={0:'value'})
+    data['invariant']=data['index'].apply(lambda x: all_dict[x])
+    data=data[['invariant','value']]
     if knotname[:2]=='10':
         return render_template(
             'acflatknot.html',
