@@ -275,7 +275,7 @@ def acresult():
     val_list=[]
     if request.method == 'POST':
         # result = request.form
-        for i in range(len(list_num)):
+        for i in range(len(aclist_num)):
             num_list.append(request.form.get('num%d' %i))
         for invname in all_inv:
             val_list.append(request.form.get(invname))
@@ -470,7 +470,7 @@ def acflatknot(knotname):
     if knotname[:2]=='10':
         crNum=10
         # rownum=int(knotname[3:]) % 500
-        rownum=( int(knotname[3:])-1  )% 500 +1
+        rownum=(int(knotname[3:])-1)% 500 +1
         filenum=int((int(knotname[3:])-rownum)/500)+1
     else:
         crNum=int(knotname[0])
