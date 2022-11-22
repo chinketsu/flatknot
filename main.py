@@ -434,7 +434,9 @@ def flatknot(knotname):
             content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
             +'\n'+'Flat knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
             +'\n'+'Virtual knots (up to 6 crossings) projecting to this knot are :'+df.iloc[0]['sameflatknot']
-        fillings=df.iloc[0]['fillings']
+        fillings=eval(df.iloc[0]['fillings'])
+        if len(fillings)>10:
+            fillings=fillings[:10]
         gcode=df.iloc[0]['gcode']
         data=df[all_inv].transpose().reset_index().rename(columns={0:'value'})
         data['invariant']=data['index'].apply(lambda x: all_dict[x])
@@ -478,6 +480,8 @@ def acflatknot(knotname):
     in_path2 = './csv/ac_%d_%d.csv' % (crNum,filenum)
     df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
     fillings=df2[df2['name']==knotname].iloc[0]['fillings']
+    if len(fillings)>10:
+        fillings=fillings[:10]
     gcode=df2[df2['name']==knotname].iloc[0]['gcode']
     data=df2[all_inv].transpose().reset_index().rename(columns={0:'value'})
     data['invariant']=data['index'].apply(lambda x: all_dict[x])
