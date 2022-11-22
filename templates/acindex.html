@@ -20,9 +20,9 @@ Flat knot crossing numbers
 {% for i in range(list_num_len) %}
     <label class='inv' for="num{{ i }}" name="num{{ i }}">
     {% if i < 3 %}
-        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}" checked>
+        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i]}}" checked>
         {% else %}
-        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i][-1]}}" check>
+        <input type="checkbox" id="num{{ i }}" name="num{{ i }}" value="{{ list_num[i]}}">
     {% endif %}
         {{ list_num[i] }}
     </label>
