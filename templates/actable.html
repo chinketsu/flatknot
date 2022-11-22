@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <head>
+        <title> Table of flat knot invariants </title>
+    </head>
+
+<div class="header">
+        Table of AC flat knot invariants
+</div>
+
+{% include "topnavbar.html" %}
+
+    <body>
+        <!--<div id='top' align="center"><h2> Table of flat knot invariants</h2> </div>-->
+        <div align="center">
+            <table>
+                <h1>
+                <!--Displaying the converted table-->
+                     {% for table in tables %}
+                    {{ table|safe }}
+                    {% endfor %}
+                </h1> 
+            </table>
+        </div>
+
+<div class="topnav">
+        {% if pagenum >1 %}
+<a href='/acresult/{{pagenum-1}}/{{num_list}}/{{val_list}}' > Previous </a>
+
+<a href='/acresult/{{1}}/{{num_list}}/{{val_list}}' > Page 1 </a>
+
+        {% else%}
+<a href='#top' > Top of Page </a>
+
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/acresult/{{pagenum+1}}/{{num_list}}/{{val_list}}' > Next </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/acresult/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 10  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/acresult/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 50  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/acresult/{{pagenum+10}}/{{num_list}}/{{val_list}}' > Next 100  </a>
+        {% endif %}
+
+        {% if morelink==True %}
+<a href='/acresult/0/{{num_list}}/{{val_list}}' > End </a>
+        {% endif %}
+
+<a href='/download/{{num_list}}/{{val_list}}' > Download the csv file </a>
+  <a class='split' href="/citeus">Please cite FlatKnotInfo</a>
+</div>
+
+
+
+
+    </body>
+</html>
