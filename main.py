@@ -423,7 +423,7 @@ def flatknot(knotname):
     elif int(knotname[0])>7:
         return redirect(f'/error')
     else:
-        rownum=int(knotname[2:]) % 500
+        rownum=int(knotname[2:])-1 % 500 +1
         filenum=int((int(knotname[2:])-rownum)/500)+1
         in_path2 = './csv/fk_%s_%d.csv' % (knotname[0],filenum)
         df= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
@@ -472,11 +472,13 @@ def acflatknot(knotname):
             )
     if knotname[:2]=='10':
         crNum=10
-        rownum=int(knotname[3:]) % 500
+        # rownum=int(knotname[3:]) % 500
+        rownum=int(knotname[3:])-1 % 500 +1
         filenum=int((int(knotname[3:])-rownum)/500)+1
     else:
         crNum=int(knotname[0])
-        rownum=int(knotname[2:]) % 500
+        # rownum=int(knotname[2:]) % 500
+        rownum=int(knotname[2:])-1 % 500 +1
         filenum=int((int(knotname[2:])-rownum)/500)+1
     in_path2 = './csv/ac_%d_%d.csv' % (crNum,filenum)
     df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
