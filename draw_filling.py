@@ -60,6 +60,7 @@ def draw_one_filling(strFlat,fill):
 
 def draw_fillings(strFlat,fillings):
     textpiece=[]
+    i=1
     for fill in eval(fillings):
         texpiece=[]
         texpiece.append(r'\begin{tikzpicture}')
@@ -72,6 +73,9 @@ def draw_fillings(strFlat,fillings):
         texpiece.append(r'  \node at (290:1.25cm) { };')
         texpiece.append(r'\end{tikzpicture}')
         textpiece.append(''.join(texpiece))
+        i+=1
+        if i>10:
+            break
     return textpiece
 
 

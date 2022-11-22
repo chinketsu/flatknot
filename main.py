@@ -232,9 +232,6 @@ def result():
             )
 
 
-
-
-
 @app.route('/result/<int:pagenum>/<numlist>/<invlist>')
 def result_i(pagenum,numlist,invlist):
     morelink=True
@@ -257,9 +254,7 @@ def result_i(pagenum,numlist,invlist):
             num_list=num_list[1:]
             pagenum=filedict[num_list[0]]-pagenum
             return redirect(f'/result/{pagenum}/{num_list}/{val_list}')
-
     morelink=filedict[num_list[0]]>pagenum or len(num_list)>1
-
     in_path = './csv/fk_%s_%d.csv' % (num_list[0],pagenum)
     data= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
     return render_template('table.html',
@@ -423,7 +418,7 @@ def flatknot(knotname):
     elif int(knotname[0])>7:
         return redirect(f'/error')
     else:
-        rownum=( int(knotname[2:])-1 ) % 500 +1
+        rownum=(int(knotname[2:])-1) % 500 +1
         filenum=int((int(knotname[2:])-rownum)/500)+1
         in_path2 = './csv/fk_%s_%d.csv' % (knotname[0],filenum)
         df= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
