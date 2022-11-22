@@ -400,9 +400,13 @@ def citeus():
 @app.route('/error')
 def hello():
     return '''
-    <h>Hey</h>
-    <div><a href='/flatknot/4.1'>FK 4.1 </a></div>
-<a style='display:block;' href='/flatknot/4.4'><div>4.4</div></a>
+    <h>Hey, it seems like you are checking something new</h>
+    <h>Or your input is not formatted.</h>
+    <h>Please try again.</h>
+    <h>Or contact me and I will calculate for you.</h>
+    <div><a href='/'> Go to the Main Page</a></div>
+    <div><a href='/calculator'> Go to Calculator</a></div>
+    <div><a href='/#contact'>Contact us</a></div>
     '''
 
 
@@ -413,50 +417,42 @@ def flatknot(knotname):
             'flatknot.html',
             knotname=knotname,
             r3_orbit='',
-            content='You are checking the trivial flat knot. All the invariants are trivial as well.',
-               )
-    if int( knotname[0] ) <6:
-        in_path = './csv/fksame_%s.csv' % (5)
-        df= pd.read_csv(in_path, dtype=str)
-    elif int( knotname[0] )<8:
-        in_path = './csv/fksame_%s.csv' % knotname[0]
-        df= pd.read_csv(in_path, dtype=str, skiprows=range(1,int(knotname[2:])), nrows=4)
-    df=df[df['name']==knotname]
-    content='Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
+            content='Trivial flat knot.')
+    elif int(knotname[0])>7:
+        return redirect(f'/error')
+    else:
+        rownum=int(knotname[2:]) % 500
+        filenum=int((int(knotname[2:])-rownum)/500)+1
+        in_path2 = './csv/fk_%s_%d.csv' % (knotname[0],filenum)
+        df= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
+
+        df=df[df['name']==knotname]
+        content='Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
             '\n'+'Knots (up to 7 crossings) with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
              'Outer characteristic polynomial of the knot is: '+\
-             df.iloc[0]['outPoly'] +'\n'+'Knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outpoly']+'\n'
-    if int(knotname[0])<7:
-        content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
+             df.iloc[0]['outPoly'] +'\n'+'Knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outPoly']+'\n'
+        if int(knotname[0])<7:
+            content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
             +'\n'+'Knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
             +'\n'+'Virtual knots (up to 6 crossings) projecting to this knot are :'+df.iloc[0]['sameflatknot']
-
-    rownum=int(knotname[2:]) % 500
-    filenum=int((int(knotname[2:])-rownum)/500)+1
-    in_path2 = './csv/fk_%s_%d.csv' % (knotname[0],filenum)
-    df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
-    fillings=df2[df2['name']==knotname].iloc[0]['fillings']
-    gcode=df2[df2['name']==knotname].iloc[0]['gcode']
-    data=df2[df2['name']==knotname].transpose().reset_index().rename(columns={0:'','index':''})
-    return render_template(
-        'flatknot.html',
-        knotname=knotname,
-        r3_orbit=df.iloc[0]['r3_orbit'],
-        diag_sym_type=df.iloc[0]['diag_sym_type'],
-        inv=df.iloc[0]['inv'],
-        bar=df.iloc[0]['bar'],
-        invbar=df.iloc[0]['invbar'],
-        gcode=gcode,
-        fillings=fillings,
-        content=content,
-        tables=[data.to_html(
-                index=None,
-                render_links=True,
-                escape=False)],
-           )
-
-
-
+        fillings=df.iloc[0]['fillings']
+        gcode=df.iloc[0]['gcode']
+        data=df[all_inv].transpose().reset_index().rename(columns={0:'','index':''})
+        return render_template(
+            'flatknot.html',
+            knotname=knotname,
+            r3_orbit=df.iloc[0]['r3_orbit'],
+            diag_sym_type=df.iloc[0]['diag_sym_type'],
+            inv=df.iloc[0]['inv'],
+            bar=df.iloc[0]['bar'],
+            invbar=df.iloc[0]['invbar'],
+            gcode=gcode,
+            fillings=fillings,
+            content=content,
+            tables=[data.to_html(
+                    index=None,
+                    render_links=True,
+                    escape=False)])
 
 
 @app.route('/acflatknot/<knotname>')
@@ -540,12 +536,14 @@ def acflatknot(knotname):
 
 
 def findgcode(gcode):
-    crNum=int(len(gcode)/4)
-    if crNum>=8:
+    if '8' in gcode:
         return ''
-    if 3<=crNum<=5:
-        crNum=5
-    df= pd.read_csv('./csv/fksame_%d.csv' %crNum,usecols=['name','gcode'], dtype=str)
+    crNum=int(len(gcode)/4)
+    pdlist=[]
+    for i in range(1,filedict['%d' %crNum]+1):
+        out_path = './csv/fk_%d_%d.csv' % (crNum,i)
+        pdlist.append(pd.read_csv(out_path,dtype=str,usecols=['name','gcode']))
+    df=pd.concat(pdlist)
     return df[df.gcode==gcode].iloc[0]['name']
 
 
@@ -565,6 +563,7 @@ def calculatorpage2(question):
     placeholdertext=''
     name=''
     gcode = request.form.get("gcode", type=str, default='')
+    gcode = gcode.replace(' ','')
     todraw=[]
     if question== 'gvk2fk':
         question2='Please input the Gauss code for virtual knot:'
@@ -574,6 +573,8 @@ def calculatorpage2(question):
             fgcode=checksymmetry.vk2fk(gcode)
             mingcode= checksymmetry.checkr2r1_recursive_orbit(fgcode)
             if mingcode !='':
+                if not checksymmetry.checkvalidgcode(mingcode):
+                    return redirect(f'/error')
                 minsibling= checksymmetry.minsibling(mingcode)
                 content = r'Your input is virtual knot '\
                     + gcode + '.\nIt projects to flat knot diagram '\
@@ -592,6 +593,8 @@ def calculatorpage2(question):
         if gcode != '':
             mingcode= checksymmetry.checkr2r1_recursive_orbit(gcode)
             if mingcode !='':
+                if not checksymmetry.checkvalidgcode(mingcode):
+                    return redirect(f'/error')
                 minsibling= checksymmetry.minsibling(mingcode)
                 content = r'Your input is flat knot '\
                     + gcode+'.\n Its minimal representation is '\

@@ -5,7 +5,20 @@ Created on Mar 13 2022
 @author: c
 =============================================================
 """
-
+def checkvalidgcode(strFlat):
+    try:
+        strFlat.count('O')==strFlat.count('U')
+        b=[]
+        for a in strFlat.split('O'):
+            b+=[int(x) for x in a.split('U') if x!= '']
+        b.sort()
+        len(b) %2==0
+        b[-1]==len(b)/2
+        set(b)==set(b[0::2])
+        # print(set(b))
+        return True
+    except:
+        return False
 
 def inc12(gcode0):
     # this function calculated inc12 type operation
