@@ -307,7 +307,7 @@ def acresult():
                         morelink=True
                         pagenum=1
                         return render_template(
-                            'table.html',
+                            'actable.html',
                             tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
                                 index=None,
                                 render_links=True,
@@ -319,7 +319,7 @@ def acresult():
                             morelink=morelink
                         )
             return render_template(
-                'table.html',
+                'actable.html',
                 tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
                     index=None,
                     render_links=True,
@@ -362,7 +362,7 @@ def acresult_i(pagenum,numlist,invlist):
 
     in_path = './csv/ac_%s_%d.csv' % (num_list[0],pagenum)
     data= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
-    return render_template('table.html',
+    return render_template('actable.html',
             tables=[data[['namelink']+val_list].to_html(
                 index=None,
                 render_links=True,
