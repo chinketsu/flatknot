@@ -32,30 +32,30 @@ diag_inv={
     'inv': 'Gauss code of inv(K)',
     'bar': 'Gauss code of bar(K)',
     'invbar': 'Gauss code of invbar(K)',
-    'diag_sym_type': 'diagrammatic symmetry type'}
+    'diag_sym_type': 'Diagrammatic symmetry type'}
 
 matrix_inv={
-    'bsMtxNoSrt':'based matrix from Gauss code',
-    'primMatrix':'primitive based matrix',
-    'isPrim':'if based matrix primitive',
-    'phi':'phi of primitive based matrix',
-    'phi_sym':'phi over symmetry',
-    'inv_phi': 'phi of inv(K)',
-    'bar_phi': 'phi of bar(K)',
-    'invbar_phi': 'phi of invbar(K)',
-    'matrix_sym_type': 'symmetry type of based matrix'}
+    'bsMtxNoSrt':'Based matrix from Gauss code',
+    'primMatrix':'Primitive based matrix',
+    'isPrim':'If based matrix primitive',
+    'phi':'Phi of primitive based matrix',
+    'phi_sym':'Phi over symmetry',
+    'inv_phi': 'Phi of inv(K)',
+    'bar_phi': 'Phi of bar(K)',
+    'invbar_phi': 'Phi of invbar(K)',
+    'matrix_sym_type': 'Symmetry type of based matrix'}
 
 
 poly_inv={
-    'inPoly': 'inner characteristic polynomial',
-    'outPoly': 'outer characteristic polynomial',
-    'arrowpoly': 'arrow polynomial',
+    'inPoly': 'Inner characteristic polynomial',
+    'outPoly': 'Outer characteristic polynomial',
+    'arrowpoly': 'Arrow polynomial',
     'cable_arr_poly': '2-strand cable arrow polynomial'}
 
 concor_inv={
-    'alg_genus': 'genus of based matrix',
-    'fillings': 'Fillings of based matrix that gives the genus',
-    'slice': 'if K is slice'}
+    'alg_genus': 'Genus of based matrix',
+    'fillings': 'Fillings admitting based matrix genus',
+    'slice': 'If K is slice'}
 
 dict_inv={ 'diagrammatic invariants': diag_inv,
     'matrix invariants': matrix_inv,
