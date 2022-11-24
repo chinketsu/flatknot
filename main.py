@@ -54,7 +54,7 @@ poly_inv={
 
 concor_inv={
     'alg_genus': 'Genus of based matrix',
-    'fillings': 'Fillings admitting based matrix genus',
+    'fillings': 'Fillings of based matrix',
     'slice': 'If K is slice'}
 
 dict_inv={ 'diagrammatic invariants': diag_inv,
