@@ -17,7 +17,8 @@
     <tr> <td> {{ line }} </td> </tr>
         {% endfor %}
 
-        {% if name != '' %}
+    {% if name != '' %}
+        {% if name != 'Currently cannot search for 8 crossing or larger' %}
     <tr> <td>The flat knot name is: <a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
         {% endif %}
 
@@ -29,6 +30,17 @@
         <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
         </td></tr>
         {% endfor %}
+
+        <tr><td>
+        The R3 orbit:
+        </td></tr>
+        <tr><td>
+       {% for diag in r3todraw %}
+        <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
+        {% endfor %}
+        </td></tr>
+
+    {% endif %}
   </tbody>
 </table>
             {% endif %}
