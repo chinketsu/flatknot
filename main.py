@@ -598,7 +598,7 @@ def calculatorpage2(question):
                 r3todraw=list(r3set)
                 name=findgcode(minsibling)
             else:
-                content == r'Your input is virtual knot '\
+                content = r'Your input is virtual knot '\
                     + gcode + '.\nIt projects to the trivial flat knot.'
     elif question== 'gfk2fk':
         question2='Please input the Gauss code for flat knot:'
