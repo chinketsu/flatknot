@@ -433,7 +433,7 @@ def flatknot(knotname):
         if int(knotname[0])<7:
             content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
             +'\n'+'Flat knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
-            +'\n'+'Virtual knots (up to 6 crossings) projecting to this knot are :'+df.iloc[0]['sameflatknot']
+            +'\n'+'Virtual knots (up to 6 crossings) projecting to this knot are :'+df.iloc[0]['sameflatknot'].replace("[\'","\'vk").replace(" \'"," \'vk")
         fillings=eval(df.iloc[0]['fillings'])
         if len(fillings)>10:
             fillings=fillings[:10]
