@@ -99,47 +99,54 @@ def acindex():
 
 
 @app.route('/inv/<invname>')
-def inv(invname):
-    return f'''
-    <p>You are checking flat knot invariant {invname},
-    but we have not updated it yet. Sorry.
-    </p>
-    '''
+def invpage(invname):
+    content_list=['We have not updated it yet. Sorry.']
+    return render_template(
+        'list.html',
+        headname=all_dict[invname],
+        content_list=content_list,
+    )
+
 
 @app.route('/glossary')
 def glossary():
-    return f'''
-    <p> We have not updated it yet. Sorry. </p>
-    <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
-    <div><a href='/'> Go back</a></div>
-    '''
+    content_list=['We have not updated it yet. Sorry.']
+    return render_template(
+        'list.html',
+        headname='Glossary',
+        content_list=content_list,
+    )
 
 
 @app.route('/todo')
 def todo():
-    return f'''
-    <p> We have not updated it yet. Sorry. </p>
-    <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
-    <div><a href='/'> Go back</a></div>
-    '''
+    content_list=['We have not updated it yet. Sorry.']
+    return render_template(
+        'list.html',
+        headname='Todo List',
+        content_list=content_list,
+    )
+
 
 @app.route('/conjecture')
 def conjecture():
-    return f'''
-    <p> We have not updated it yet. Sorry. </p>
-    <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
-    <div><a href='/'> Go back</a></div>
-    '''
+    content_list=['We have not updated it yet. Sorry.']
+    return render_template(
+        'list.html',
+        headname='Conjecture List',
+        content_list=content_list,
+    )
+
+
 
 @app.route('/ref')
 def ref():
-    return f'''
-    <p> We have not updated it yet. Sorry. </p>
-    <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
-    <div><a href='/'> Go back</a></div>
-    '''
-
-
+    content_list=['We have not updated it yet. Sorry.']
+    return render_template(
+        'list.html',
+        headname='Reference List',
+        content_list=content_list,
+    )
 
 
 
@@ -150,6 +157,7 @@ def drawer(gcode):
         text=gcodedrawer.draw_arc(gcode)
     )
 
+
 @app.route('/fillings/<gcode>/<fillings>')
 def fillings(gcode,fillings):
     return render_template(
@@ -157,15 +165,22 @@ def fillings(gcode,fillings):
         text=draw_filling.draw_fillings(gcode, fillings)
     )
 
+
 @app.route('/crossref/<int:pagenum>')
 def crossref(pagenum):
+    df= pd.read_csv(
+        './csv/crossref.csv',
+        dtype=str,
+        skiprows=range(1,600*pagenum+1),
+        nrows=600)
     return render_template(
         'crossref.html',
-        tables=[pd.read_csv('./csv/crossref.csv',dtype=str)[pagenum*200:pagenum*200+200].to_html(
-                index=None,
-                render_links=True,
-                escape=False)], 
-            pagenum=pagenum,
+        tables=[
+            df[200*i:200*i+200].
+            to_html(index=None, render_links=True, escape=False)
+            for i in range(0,int(df.shape[0]/200.0+0.5))
+        ],
+        pagenum=pagenum,
     )
 
 
