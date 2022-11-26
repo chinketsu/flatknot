@@ -6,19 +6,19 @@
 </div>
 
 {% include "topnavbar.html" %}
+{% include "top2navbar.html" %}
 
     <body>
-        <!--<div id='top' align="center"><h2> Table of flat knot invariants</h2> </div>-->
-        <div align="center">
+                    {% for table in tables %}
+        <div class="onethird">
             <table>
                 <h1>
                 <!--Displaying the converted table-->
-                     {% for table in tables %}
                     {{ table|safe }}
-                    {% endfor %}
                 </h1> 
             </table>
         </div>
+                    {% endfor %}
 
 
 <div class="topnav">
@@ -29,22 +29,25 @@
 
         {% endif %}
 
-        {% if  pagenum<465%}
-<a href='/crossref/{{pagenum+1}}' > Next </a>
+        {% if  pagenum<154 %}
+<a href='/crossref/{{pagenum+1}}' >Next</a>
         {% endif %}
 
-        {% if  pagenum<455%}
-<a href='/crossref/{{pagenum+10}}' > Next 10</a>
+        {% if  pagenum<144 %}
+<a href='/crossref/{{pagenum+10}}' >Next 10</a>
         {% endif %}
 
-        {% if  pagenum<365%}
-<a href='/crossref/{{pagenum+100}}' > Next 100</a>
+        {% if  pagenum<54 %}
+<a href='/crossref/{{pagenum+100}}' >Next 100</a>
         {% endif %}
 
-<a href='#' > Download will come soon</a>
+        {% if  pagenum<154 %}
+<a href='/crossref/154' >End</a>
+        {% endif %}
+<!--<a href='#' > Download will come soon</a>-->
 
 
-  <a class='split' href="/citeus">Please cite FlatKnotInfo</a>
+  <a class='split' href="/citeus">About FlatKnotInfo</a>
 </div>
 
 
