@@ -5,6 +5,15 @@ Created on Mar 13 2022
 @author: c
 =============================================================
 """
+Lst1 = ['a','b','c','d','e','f','g','h','i','j','k', 'l','m',
+        'n','o','p', 'q','r','s','t','u','v','w','x','y','z']
+Lst2= ['%d' %i for i in range(10,10+26)]
+Lst3= ['%d' %i for i in range(1,10)]+ Lst1
+
+Let2int_dict=dict(zip(Lst1,Lst2))
+Int2let_dict=dict(zip(Lst2,Lst1))
+
+
 def checkvalidgcode(strFlat):
     try:
         strFlat.count('O')==strFlat.count('U')
@@ -20,133 +29,21 @@ def checkvalidgcode(strFlat):
     except:
         return False
 
-def inc12(gcode0):
-    # this function calculated inc12 type operation
+
+def let2int(gcode):
     # Input example:
     # Output:
-    crNum=int(len(gcode0)/4)
-    lst=[]
-    gcode=gcode0+gcode0[:2]
-    for i in range(1, crNum+1):
-        pattern1='O%dO' %i
-        if pattern1 in gcode:
-            # print('i',i)
-            # print(gcode[gcode.find(pattern1)+3])
-            j= int(gcode[gcode.find(pattern1)+3])
-            # print('j',j)
-            for k in range(1,crNum+1):
-                pattern2='U%dU%d' %(k,i)
-                # print(pattern2)
-                if pattern2 in gcode:
-                    # print('k',k)
-                    pattern3='O%dU%d' % (k,j)
-                    if pattern3 in gcode:
-                        # print(i,j,k)
-                        newcode=gcode.replace(pattern2, 'U%dU%d' %(j,k)).\
-                            replace(pattern3, 'U%dO%d' %(i,k))
-                        if i!=j and j!=k and i!=k:
-                            if newcode[-2:]== gcode[-2:]:
-                                lst.append(mingcode(newcode[:-2]))
-                            else:
-                                # print('careful: '+gcode0+','+newcode)
-                                lst.append(
-                                    mingcode(
-                                        newcode[-2:] + newcode[2:-2]
-                                    )
-                                )
-    return lst
+    for i in Let2int_dict.items():
+        gcode=gcode.replace(i[0],i[1])
+    return gcode
 
 
-def dec12(gcode0):
-    # This function do
+def int2let(gcode):
     # Input example:
     # Output:
-    crNum=int(len(gcode0)/4)
-    lst=[]
-    gcode=gcode0+gcode0[:2]
-    for i in range(1, crNum+1):
-        pattern1='O%dO' %i
-        if pattern1 in gcode:
-            j= int(gcode[gcode.find(pattern1)+3])
-            for k in range(1,crNum+1):
-                pattern2='U%dU%d' %(j,k)
-                if pattern2 in gcode:
-                    pattern3='U%dO%d' % (i,k)
-                    if pattern3 in gcode:
-                        # print(i,j,k)
-                        newcode=gcode.replace(pattern2, 'U%dU%d' %(k,i)).\
-                            replace(pattern3, 'O%dU%d' %(k,j))
-                        if i!=j and j!=k and i!=k:
-                            if newcode[-2:]== gcode[-2:]:
-                                lst.append(mingcode(newcode[:-2]))
-                            else:
-                                # print('careful: '+gcode0+','+newcode)
-                                lst.append(
-                                    mingcode(
-                                        newcode[-2:]+newcode[2:-2]))
-    return lst
-
-
-def inc3dec4(gcode0):
-    # This function do
-    # Input example:
-    # Output:
-    crNum=int(len(gcode0)/4)
-    lst=[]
-    gcode=gcode0+gcode0[:2]
-    for i in range(1, crNum+1 ) :
-        pattern1='U%dO' %i
-        if pattern1 in gcode:
-            j= int(gcode[gcode.find(pattern1)+3])
-            for k in range(1,crNum+1):
-                pattern2='U%dO%d' %(j,k)
-                if pattern2 in gcode:
-                    pattern3='U%dO%d' % (k,i)
-                    if pattern3 in gcode:
-                        newcode=gcode.\
-                            replace(pattern1+str(j), 'O%dU%d' %(i,j)).\
-                            replace(pattern2, 'O%dU%d' %(k,i)).\
-                            replace(pattern3, 'O%dU%d' %(j,k))
-                        if i!=j and j!=k and i!=k:
-                            if newcode[-2:]== gcode[-2:]:
-                                lst.append(mingcode(newcode[:-2]))
-                            else:
-                                # print('careful: '+gcode0+','+newcode)
-                                lst.append(
-                                    mingcode(
-                                        newcode[-2:]+newcode[2:-2]))
-    return lst
-
-
-def inc4dec3(gcode0):
-    # This function do
-    # Input example:
-    # Output:
-    crNum=int(len(gcode0)/4)
-    lst=[]
-    gcode=gcode0+gcode0[:2]
-    for i in range(1, crNum+1):
-        pattern1='O%dU' %i
-        if pattern1 in gcode:
-            j= int(gcode[gcode.find(pattern1)+3])
-            for k in range(1,crNum+1):
-                pattern2='O%dU%d' %(j,k)
-                if pattern2 in gcode:
-                    pattern3='O%dU%d' % (k,i)
-                    if pattern3 in gcode:
-                        newcode=gcode.\
-                            replace(pattern1+str(j), 'U%dO%d' %(i,j)).\
-                            replace(pattern2, 'U%dO%d' %(k,i)).\
-                            replace(pattern3, 'U%dO%d' %(j,k))
-                        if i!=j and j!=k and i!=k:
-                            if newcode[-2:]== gcode[-2:]:
-                                lst.append(mingcode(newcode[:-2]))
-                            else:
-                                # print('careful: '+gcode0+','+newcode)
-                                lst.append(
-                                    mingcode(
-                                        newcode[-2:]+newcode[2:-2]))
-    return lst
+    for i in Int2let_dict.items():
+        gcode=gcode.replace(i[0],i[1])
+    return gcode
 
 
 def mingcode(gcode):
@@ -155,6 +52,13 @@ def mingcode(gcode):
     # Output:
     if len(gcode)==0:
         return ''
+    # -------
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    # now get the crossing number
+    # -------
     crNum=int(len(gcode)/4)
     str0=(gcode[0::2]+gcode[0::2]).replace('U','1').replace('O','0')
     lst=[int(str0[i:i+2*crNum]) for i in range(2*crNum)]
@@ -168,7 +72,7 @@ def mingcode(gcode):
         ihaveseen=[]
         verynewcode=''
         perm={}
-        chordn=1
+        chordn=0
         for i in range(1,len(newgcode),2):
             # print(newgcode[i] )
             if newgcode[i] in ihaveseen:
@@ -176,14 +80,170 @@ def mingcode(gcode):
 
                 # print(verynewcode )
             else:
-                verynewcode+=(newgcode[i-1]+str(chordn))
-                perm[newgcode[i]]=str(chordn)
+                verynewcode+=(newgcode[i-1]+Lst3[chordn])
+                perm[newgcode[i]]=Lst3[chordn]
                 ihaveseen.append(newgcode[i])
                 chordn += 1
                 # print('perm',perm )
                 # print(verynewcode )
         tobecompared.append(verynewcode)
     return minlydon(tobecompared)
+
+
+def inc12(gcode):
+    # this function calculated inc12 type operation
+    # Input example:
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    crNum=int(len(gcode)/4)
+    lst=[]
+    gcode=gcode+gcode[:2]
+    for i in Lst3[:crNum]:
+        pattern1='O%sO' %i
+        if pattern1 in gcode:
+            # print('i',i)
+            # print(gcode[gcode.find(pattern1)+3])
+            j= gcode[gcode.find(pattern1)+3]
+            # print('j',j)
+            for k in Lst3[:crNum]:
+                pattern2='U%sU%s' %(k,i)
+                # print(pattern2)
+                if pattern2 in gcode:
+                    # print('k',k)
+                    pattern3='O%sU%s' % (k,j)
+                    if pattern3 in gcode:
+                        # print(i,j,k)
+                        newcode=gcode.replace(pattern2, 'U%sU%s' %(j,k)).\
+                            replace(pattern3, 'U%sO%s' %(i,k))
+                        if i!=j and j!=k and i!=k:
+                            if newcode[-2:]== gcode[-2:]:
+                                lst.append(mingcode(newcode[:-2]))
+                            else:
+                                # print('careful: '+gcode+','+newcode)
+                                lst.append(
+                                    mingcode(
+                                        newcode[-2:] + newcode[2:-2]
+                                    )
+                                )
+    return lst
+
+
+def dec12(gcode):
+    # This function do
+    # Input example:
+    # Output:
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    crNum=int(len(gcode)/4)
+    lst=[]
+    gcode=gcode+gcode[:2]
+    for i in Lst3[:crNum]:
+        pattern1='O%sO' %i
+        if pattern1 in gcode:
+            j= gcode[gcode.find(pattern1)+3]
+            for k in Lst3[:crNum]:
+                pattern2='U%sU%s' %(j,k)
+                if pattern2 in gcode:
+                    pattern3='U%sO%s' % (i,k)
+                    if pattern3 in gcode:
+                        # print(i,j,k)
+                        newcode=gcode.replace(pattern2, 'U%sU%s' %(k,i)).\
+                            replace(pattern3, 'O%sU%s' %(k,j))
+                        if i!=j and j!=k and i!=k:
+                            if newcode[-2:]== gcode[-2:]:
+                                lst.append(mingcode(newcode[:-2]))
+                            else:
+                                # print('careful: '+gcode+','+newcode)
+                                lst.append(
+                                    mingcode(
+                                        newcode[-2:]+newcode[2:-2]))
+    return lst
+
+
+def inc3dec4(gcode):
+    # This function do
+    # Input example:
+    # Output:
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    crNum=int(len(gcode)/4)
+    lst=[]
+    gcode=gcode+gcode[:2]
+    for i in Lst3[:crNum]:
+        pattern1='U%sO' %i
+        if pattern1 in gcode:
+            j= gcode[gcode.find(pattern1)+3]
+            for k in Lst3[:crNum]:
+                pattern2='U%sO%s' %(j,k)
+                if pattern2 in gcode:
+                    pattern3='U%sO%s' % (k,i)
+                    if pattern3 in gcode:
+                        newcode=gcode.\
+                            replace(pattern1+str(j), 'O%sU%s' %(i,j)).\
+                            replace(pattern2, 'O%sU%s' %(k,i)).\
+                            replace(pattern3, 'O%sU%s' %(j,k))
+                        if i!=j and j!=k and i!=k:
+                            if newcode[-2:]== gcode[-2:]:
+                                lst.append(mingcode(newcode[:-2]))
+                            else:
+                                # print('careful: '+gcode+','+newcode)
+                                lst.append(
+                                    mingcode(
+                                        newcode[-2:]+newcode[2:-2]))
+    return lst
+
+
+def inc4dec3(gcode):
+    # This function do
+    # Input example:
+    # Output:
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    crNum=int(len(gcode)/4)
+    lst=[]
+    gcode=gcode+gcode[:2]
+    for i in Lst3[:crNum]:
+        pattern1='O%sU' %i
+        if pattern1 in gcode:
+            j= gcode[gcode.find(pattern1)+3]
+            for k in Lst3[:crNum]:
+                pattern2='O%sU%s' %(j,k)
+                if pattern2 in gcode:
+                    pattern3='O%sU%s' % (k,i)
+                    if pattern3 in gcode:
+                        newcode=gcode.\
+                            replace(pattern1+str(j), 'U%sO%s' %(i,j)).\
+                            replace(pattern2, 'U%sO%s' %(k,i)).\
+                            replace(pattern3, 'U%sO%s' %(j,k))
+                        if i!=j and j!=k and i!=k:
+                            if newcode[-2:]== gcode[-2:]:
+                                lst.append(mingcode(newcode[:-2]))
+                            else:
+                                # print('careful: '+gcode+','+newcode)
+                                lst.append(
+                                    mingcode(
+                                        newcode[-2:]+newcode[2:-2]))
+    return lst
 
 
 def checkR3(r3set):
@@ -208,18 +268,32 @@ def checkR3(r3set):
         return checkR3(newr3set)
 
 
-def inv_gauss(strFlat0):
+def inv_gauss(gcode):
     # This function do
     # Input example:
     # Output:
-    return "".join(map(str.__add__, strFlat0[-2::-2],strFlat0[-1::-2]))
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    return "".join(map(str.__add__, gcode[-2::-2],gcode[-1::-2]))
 
 
-def bar_gauss(strFlat0):
+def bar_gauss(gcode):
     # This function do
     # Input example:
     # Output:
-    return strFlat0.replace('O','M').replace('U','O').replace('M','U')
+    # -------
+    if len(gcode)==0:
+        return ''
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
+    return gcode.replace('O','M').replace('U','O').replace('M','U')
 
 
 def checkmirrorimg(gcode):
@@ -242,6 +316,13 @@ def checkmirrorimg(gcode):
         barinv="Same"
         symlst[2]=1
     return "inv: "+ invcode +"\n bar: "+ barcode+"\n barinv: "+barinv
+    # return pd.Series({
+        # "inv": invcode,
+        # "bar": barcode,
+        # "barinv": barinv,
+        # "dig_sym_type": symlst,
+        # "r3_orbit": leastset,
+        # "r3_orbit_length": len(leastset)})
 
 
 def minsibling(gcode):
@@ -270,22 +351,33 @@ def minlydon(r3set):
             r3str[0::2]+''.join([r3str[i+1]
                                 for i in range(len(r3str))
                                 if r3str.startswith('U', i)]):r3str0})
+        # [r3str[i+1] for i in range(len(r3str)) if r3str.startswith('U', i)]
+        # is for getting a list of U?.
+        # e.g. r3str='O1O2U6O3U2O4U8O5UxO6U5U1O7O8U3U7O9OxU4U9'
+        # ['6', '2', '8', 'x', '5', '1', '3', '7', '4', '9']
     return lyndondict[min(lyndondict.keys())]
 
 
 def reorderforlyn(gcode):
+    if len(gcode)==0:
+        return ''
+    # -------
+    # this works for up to 36 crossings:
+    gcode=int2let(gcode)
+    # validate the Gauss code:
+    assert len(gcode) %4==0
     # This function do
     # Input example:
     # Output:
     crNum=int(len(gcode)/4)
     checklen=[]
-    for i in range(1,crNum+1):
-        checklen.append(gcode[:gcode.find('O%d' %i)].count('O')+1)
-    for i in range(1,crNum+1):
-        gcode=gcode.replace('O%d' %i,'o%d' %checklen[i-1])
-        gcode=gcode.replace('U%d' %i,'u%d' %checklen[i-1])
-    gcode=gcode.replace('o','O')
-    gcode=gcode.replace('u','U')
+    for i in Lst3[:crNum]:
+        checklen.append(Lst3[gcode[:gcode.find('O%s' %i)].count('O')])
+    for i in range(crNum):
+        gcode=gcode.replace('O%s' %Lst3[i],'M%s' %checklen[i])
+        gcode=gcode.replace('U%s' %Lst3[i],'N%s' %checklen[i])
+    gcode=gcode.replace('M','O')
+    gcode=gcode.replace('N','U')
     return gcode
 
 
@@ -309,19 +401,22 @@ def symtype(gcode):
 
 
 def checkr2r1_only_one_move(gcode0):
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # Caution: do not change gcode0 to gcode
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # This function do
     # Input example:
     # Output:
     crNum=int(len(gcode0)/4)
-    for i in range(1,crNum+1):
-        for j in range(1,crNum+1):
+    for i in Lst3[:crNum]:
+        for j in Lst3[:crNum]:
             # print(i,j, '\n')
-            pattern1='O%dU%d' %(i,j)
+            pattern1='O%sU%s' %(i,j)
             # print('pattern1: ',pattern1, '\n')
-            pattern2='O%dU%d' %(j,i)
+            pattern2='O%sU%s' %(j,i)
             # print('pattern2: ',pattern2, '\n')
-            pattern3='U%dO%d' %(i,j)
-            pattern4='U%dO%d' %(j,i)
+            pattern3='U%sO%s' %(i,j)
+            pattern4='U%sO%s' %(j,i)
             gcode=gcode0+gcode0[:2]
             if i==j:
                 if pattern1 in gcode:
@@ -329,14 +424,14 @@ def checkr2r1_only_one_move(gcode0):
                     if newcode[-2:]== gcode[-2:]:
                         return mingcode(newcode[:-2])
                     else:
-                        # print('careful: '+gcode0+','+newcode)
+                        # print('careful: '+gcode+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
                 elif pattern3 in gcode:
                     newcode=gcode.replace(pattern3,'')
                     if newcode[-2:]== gcode[-2:]:
                         return mingcode(newcode[:-2])
                     else:
-                        # print('careful: '+gcode0+','+newcode)
+                        # print('careful: '+gcode+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
             elif i!=j:
                 if pattern1 in gcode and pattern3 in gcode:
@@ -345,7 +440,7 @@ def checkr2r1_only_one_move(gcode0):
                     if newcode[-2:]== gcode[-2:]:
                         return mingcode(newcode[:-2])
                     else:
-                        # print('careful: '+gcode0+','+newcode)
+                        # print('careful: '+gcode+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
                 elif pattern1 in gcode and pattern2 in gcode:
                     # print('pattern1 , pattern2 here')
@@ -353,7 +448,7 @@ def checkr2r1_only_one_move(gcode0):
                     if newcode[-2:]== gcode[-2:]:
                         return mingcode(newcode[:-2])
                     else:
-                        # print('careful: '+gcode0+','+newcode)
+                        # print('careful: '+gcode+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
                 elif pattern3 in gcode and pattern4 in gcode:
                     # print('pattern3 , pattern4 here')
@@ -361,65 +456,61 @@ def checkr2r1_only_one_move(gcode0):
                     if newcode[-2:]== gcode[-2:]:
                         return mingcode(newcode[:-2])
                     else:
-                        # print('careful: '+gcode0+','+newcode)
+                        # print('careful: '+gcode+','+newcode)
                         return mingcode(newcode[-2:]+newcode[2:-2])
     return mingcode(gcode0)
 
 
-def checkr2r1_recursive_orbit(gcode0):
+def checkr2r1_recursive_orbit(gcode):
     # This function do
     # Input example:
     # Output:
-    gcode0=mingcode(gcode0)
-    len0=len(gcode0)
-    if len0<=4:
+    gcode=mingcode(gcode)
+    len0=len(gcode)
+    if len0<=8:
         return ''
-    for gcode in checkR3({gcode0}):
+    for gcode in checkR3({gcode}):
         newcode=checkr2r1_only_one_move(gcode)
         if len(newcode)<len0:
             return checkr2r1_recursive_orbit(newcode)
-    return gcode0
+    return gcode
 
 
 def vk2fk(strFlat0):
     # This function do
     # Input example:
     # Output:
-    strFlat='g'+strFlat0+'g'
-    rank_num=len(strFlat)
+    if len(strFlat0)==0:
+        return ''
+    # -------
+    # this works for up to 36 crossings:
+    gcode=int2let(strFlat0)
+    gcode='g'+strFlat0+'g'
+    rank_num=len(gcode)
     switcher ={'O': 'U', 'U':'O'}
     for i in range(rank_num):
-        if i %3==0 and strFlat[i]=='-':
-            strFlat=strFlat[:i-2] + switcher[strFlat[i-2]]+ strFlat[i-1:]
-    return strFlat[1:].replace('-','').replace('+','')[:-1]
+        if i %3==0 and gcode[i]=='-':
+            gcode=gcode[:i-2] + switcher[gcode[i-2]]+ gcode[i-1:]
+    return let2int(gcode[1:].replace('-','').replace('+','')[:-1])
 
 
-def gcode2parity(gcode0,modn):
+def gcode2parity(gcode,modn):
     """
     this matrix calculation follows Gibson's convention,
     so the n:=#heads-#tails
     2022-8-8: I changed all convention to make it the same as Gibson's
     'Over' or 'tail' always means +1 in counting intersections.
     """
-    gcode=mingcode(gcode0)
+    gcode=mingcode(gcode)
     # print(gcode)
-    if '10' in gcode:
-        gcode=gcode.replace('10', 'x')
     rank_num = int(len(gcode)/4)
     assert rank_num == len(gcode)/4
     tails = []
-    for i in range(1,rank_num+1):
-        if i < 10:
-            tails.append(int(gcode.rindex("O%i" %i)/2+1))
-        elif i ==10:
-            tails.append(int(gcode.rindex("O%s" %'x')/2+1))
-    # now we make a list for heads:
     heads = []
-    for i in range(1,rank_num+1):
-        if i < 10:
-            heads.append(int(gcode.rindex("U%i" %i)/2+1))
-        elif i ==10:
-            heads.append(int(gcode.rindex("U%s" %'x')/2+1))
+    for i in Lst3[:rank_num]:
+        tails.append(int(gcode.rindex("O%s" %i)/2+1))
+    # now we make a list for heads:
+        heads.append(int(gcode.rindex("U%s" %i)/2+1))
     # now calculate theta, which represent the lower triangle of the matrix:
     # firstly, we calculate the first column n(e_i)=B(e_i,s)
     theta = []
@@ -448,15 +539,45 @@ def gcode2parity(gcode0,modn):
         # print('flag_2',newgcode)
         # print(newgcode,len(newgcode),len(gcode))
         # --------vv for df check
-        # try:
-            # newgcode= df[df.gcode==newgcode].iloc[0]['name']
-        # except:
-            # print(newgcode)
+        try:
+            newgcode= df[df.gcode==newgcode].iloc[0]['name']
+        except:
+            print(newgcode)
     else:
         newgcode=='0'
         # --------^^ for df check
     return newgcode
 
+
+def draw_arc(strFlat):
+    textpiece=[]
+    textpiece.append(r'\begin{tikzpicture}')
+    # textpiece.append('\n')
+    textpiece.append(r'\draw[] (0:1cm) arc (0:360:1cm);')
+    # textpiece.append('\n')
+    gcode=int2let(strFlat)
+    rank_num=int(len(gcode)/4)
+    half=360/(4*rank_num)
+    tails = []
+    heads = []
+    for i in Lst3[:rank_num]:
+        tails.append(int(gcode.rindex("O%s" %i)/2+1))
+        heads.append(int(gcode.rindex("U%s" %i)/2+1))
+
+    for i in range(0,rank_num):
+        textpiece.append(
+                r'\draw[-to] (%d:1cm) to[out=%d,in=%d] (%d:1cm);'
+                %(
+                    90+(2*tails[i]-1)*half,
+                    (2*tails[i]-1)*half-90,
+                    (2*heads[i]-1)*half-90,
+                    90+(2*heads[i]-1)*half)
+                )
+    # textpiece.append('\n')
+    textpiece.append(r'  \node at (270:1.25cm) {%s};' %strFlat)
+    # textpiece.append('\n')
+    textpiece.append(r'\end{tikzpicture}')
+    return(' '.join(textpiece))
 
 if __name__ == "__main__":
     pass

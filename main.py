@@ -12,7 +12,6 @@ flask run
 from flask import Flask, render_template, request, redirect
 import pandas as pd
 import checksymmetry
-import gcodedrawer
 import draw_filling
 
 app = Flask(__name__)
@@ -154,7 +153,7 @@ def ref():
 def drawer(gcode):
     return render_template(
         'diagram.html',
-        text=gcodedrawer.draw_arc(gcode)
+        text=checksymmetry.draw_arc(gcode)
     )
 
 
@@ -586,7 +585,7 @@ def calculatorpage2(question):
     question2=''
     content= ''
     placeholdertext=''
-    name=''
+    name='Not yet input'
     gcode = request.form.get("gcode", type=str, default='')
     gcode = gcode.replace(' ','')
     todraw=[]
@@ -596,20 +595,26 @@ def calculatorpage2(question):
         placeholdertext='O1+O2+O3+U1+U3+U2+'
         # ifchecked1='checked'
         if gcode != '':
+            name=''
             fgcode=checksymmetry.vk2fk(gcode)
+            if not checksymmetry.checkvalidgcode(fgcode):
+                return redirect('/error')
             mingcode= checksymmetry.checkr2r1_recursive_orbit(fgcode)
+            pretty_mingcode= checksymmetry.let2int(mingcode)
             if mingcode !='':
-                if not checksymmetry.checkvalidgcode(mingcode):
-                    return redirect('/error')
-                minsibling= checksymmetry.minsibling(mingcode)
-                r3set=checksymmetry.checkR3(mingcode)
+                minsibling= checksymmetry.let2int(
+                    checksymmetry.minsibling(mingcode))
+                r3set=[
+                    checksymmetry.let2int(code)
+                    for code in checksymmetry.checkR3(mingcode)]
                 content = r'Your input is virtual knot '\
                     + gcode + '.\nIt projects to flat knot diagram '\
                     + fgcode+'.\n Its minimal representation is '\
-                    + mingcode+'.\n Its minimal sibling is '\
+                    + pretty_mingcode\
+                    +'.\n Its minimal sibling is '\
                     + minsibling+'.\n Its R3 orbit is '\
                     + str(r3set)
-                todraw=[fgcode,mingcode,minsibling]
+                todraw=[fgcode,pretty_mingcode,minsibling]
                 r3todraw=list(r3set)
                 name=findgcode(minsibling)
             else:
@@ -620,18 +625,24 @@ def calculatorpage2(question):
         placeholdertext='O1O2O3U1U3U2'
         # ifchecked2='checked'
         if gcode != '':
+            name=''
+            if not checksymmetry.checkvalidgcode(gcode):
+                return redirect('/error')
             mingcode= checksymmetry.checkr2r1_recursive_orbit(gcode)
+            pretty_mingcode= checksymmetry.let2int(mingcode)
             if mingcode !='':
-                if not checksymmetry.checkvalidgcode(mingcode):
-                    return redirect('/error')
-                minsibling= checksymmetry.minsibling(mingcode)
-                r3set=checksymmetry.checkR3(mingcode)
+                minsibling= checksymmetry.let2int(
+                    checksymmetry.minsibling(mingcode))
+                r3set=[
+                    checksymmetry.let2int(code)
+                    for code in checksymmetry.checkR3(mingcode)]
                 content = r'Your input is flat knot '\
                     + gcode+'.\n Its minimal representation is '\
-                    + mingcode+'.\n Its minimal sibling is '\
+                    + pretty_mingcode\
+                    + '.\n Its minimal sibling is '\
                     + minsibling+'.\n Its R3 orbit is '\
                     + str(r3set)
-                todraw=[mingcode,minsibling]
+                todraw=[pretty_mingcode,minsibling]
                 r3todraw=list(r3set)
                 name=findgcode(minsibling)
             else:
