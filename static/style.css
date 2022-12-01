@@ -2,6 +2,11 @@ body {
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     margin-left:5%;
     margin-right:5%;
+    background-color: #ffffff;
+}
+body.embeded  {
+    margin-left:0%;
+    margin-right:0%;
 }
 a.intable       { color: #000000; }
 h2       { color:  #550022; }
@@ -25,41 +30,54 @@ embed {
     font-weight: bold;
 }
 
+.forcontent{
+    width:94%;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border:2px solid #ddd;
+    padding:3%;
+    display:flex;
+    flex-direction:column;
+    border-radius:10px;
+    display: inline-block;
+}
+
+
 .onethird {
-  /*padding: 3px;*/
-    align:center;
-    margin-top:3em;
-    margin-bottom:3em;
-    width:30%;
+    width:32.8%;
     display: inline-block;
 }
 
 
 
 .divider {
-    border-radius: 5px 5px 0 0;
-    margin-top:3em;
-    width:100%;
-    height:1.5em;
+  border-radius: 10px 10px 0 0;
+  margin-top:3em;
+  width:98%;
+  /*height:1.2em;*/
   text-align: center;
-  padding: 3px;
+  padding: 1%;
   background-color: #940049;
   color: white;
   display: inline-block;
-  font-size: 0.7em;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  word-spacing: 12px;
 }
 
 
 
 .footer {
-  border-radius: 0 0 5px 5px;
-  width:100%;
+  border-radius: 0 0 10px 10px;
+  width:96%;
+  padding: 2%;
   text-align: left;
-  padding: 3px;
   background-color: #666666;
   color: white;
   display: inline-block;
   font-size: 0.8em;
+  line-height: 2em;
+  letter-spacing: 1px;
 }
 /* Create a top navigation bar with a black background color  */
 .topnav {
@@ -102,10 +120,11 @@ embed {
 
 /* Create a top navigation bar with a black background color  */
 .topnav2 {
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 10px 10px;
     /*width:83.5%;*/
   background-color: #bbb;
   overflow: hidden;
+  margin-bottom:3em;
 }
 
 /* Style the links inside the navigation bar */
@@ -126,6 +145,10 @@ embed {
 }
 
 
+table.dataframe {
+    min-width: 80%;
+}
+
 
 table.dataframe, .dataframe tr, .dataframe td {
   /*margin: 20px;*/
@@ -139,10 +162,13 @@ table.dataframe, .dataframe tr, .dataframe td {
 }
 
 
-table.dataframe td a{
-    display:block;
-}
+/*table.dataframe td a{*/
+    /*display:block;*/
+/*}*/
 
+table.dataframe th {
+  text-align:center;
+}
 
 tr:nth-child(odd){ background-color:#eee; }
 tr:nth-child(even){ background-color:#fff; }
@@ -151,6 +177,7 @@ tr:hover{ background-color: #ffff99;}
 
 
 form{
+    width:80%;
   margin-top: 3em;
   margin-bottom: 3em;
     border:2px solid #ddd;
@@ -165,13 +192,12 @@ form{
 
 
 label.invtype{
-    border-radius:4px;
+    border-radius:5px;
     width:96.5%;
     border-top:2px solid #ddd;
     margin-top:10px;
     margin-bottom:10px;
     border-bottom:1px solid #ddd;
-    text-indent: 2pt;
     float: left;
     display: inline-block;
     /*border: 1px solid #fff;*/
@@ -194,7 +220,10 @@ label.inv{
     float: left;
     /*display: inline-block;*/
     border: 1px solid #C8C8C8;
-    padding: 10px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: 10px;
+    padding-top: 10px;
     font-size: 0.9em;
     background-color: #eee;
     /*text-align: center;*/
