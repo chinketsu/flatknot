@@ -11,14 +11,10 @@
     <body>
         <!--<div id='top' align="center"><h2> Table of flat knot invariants</h2> </div>-->
         <div align="center">
-            <table>
-                <h1>
                 <!--Displaying the converted table-->
                      {% for table in tables %}
                     {{ table|safe }}
                     {% endfor %}
-                </h1> 
-            </table>
         </div>
 
 <div class="topnav">

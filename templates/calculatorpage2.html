@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include "header.html" %}
-    <body>
-            {% if question2 != '' %}
-<form method="post" width='100%'>
+    <body class="embeded">
+{% if question2 != '' %}
+    <form method="post">
             <label class='invtype' for="input" name="input"> {{question2}} </label>
-        <input type="text" name="gcode"  size="100%" value="{{ request.form['gcode'] }}" placeholder="&nbsp;Example:  {{placeholdertext}} &nbsp;">
-                <br>
-                <br>
-        <button class="leftsubmit" type="submit" name="submit">Check</button>
 
-</form>
- <table border="1" class="dataframe">
-  <tbody>
-       {% for line in content.split('\n') %}
-    <tr> <td> {{ line }} </td> </tr>
-        {% endfor %}
+            <input type="text" name="gcode"  size="60" required
+       minlength="4" maxlength="80" value="{{ request.form['gcode'] }}" placeholder="&nbsp;Example:  {{placeholdertext}} &nbsp;">
+                    <br>
+                    <br>
+            <button class="leftsubmit" type="submit" name="submit">Check</button>
 
-    {% if name != '' %}
-        {% if name != 'Currently cannot search for 8 crossing or larger' %}
-    <tr> <td>The flat knot name is: <a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
-        {% endif %}
+    </form>
+    {% if name != 'Not yet input' %}
+             <table border="1" class="dataframe">
+              <tbody>
+               {% for line in content.split('\n') %}
+            <tr> <td> {{ line }} </td> </tr>
+                {% endfor %}
 
-        <tr><td>
-        The corresponding diagrams are:
-        </td></tr>
-       {% for diag in todraw %}
-        <tr><td>
-        <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
-        </td></tr>
-        {% endfor %}
+            {% if name != '' %}
+            {% if name != 'Currently cannot search for 8 crossing or larger' %}
+            <tr> <td>The flat knot name is: <a href="/flatknot/{{name}}" target='_blank' >{{ name }}</a></td></tr>
+            {% else %}
+                <tr><td>
+                        'Sorry currently the server cannot search for more than 8 crossings, but you can <a href="mailto:chenj293@mcmaster.ca" >contact</a> the website builder to find the knot.  '
+                </td></tr>
+                {% endif %}
 
-        <tr><td>
-        The R3 orbit:
-        </td></tr>
-        <tr><td>
-       {% for diag in r3todraw %}
-        <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
-        {% endfor %}
-        </td></tr>
+                <tr><td>
+                The corresponding diagrams are:
+                </td></tr>
+               {% for diag in todraw %}
+                <tr><td>
+                <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
+                </td></tr>
+                {% endfor %}
 
-    {% endif %}
-  </tbody>
-</table>
+                <tr><td>
+                The R3 orbit:
+                </td></tr>
+                <tr><td>
+               {% for diag in r3todraw %}
+                <embed type="text/html" src="/diagram/{{diag}}" width=auto height=auto>
+                {% endfor %}
+                </td></tr>
+
             {% endif %}
+          </tbody>
+        </table>
+    {% endif %}
+{% endif %}
     </body>
 
 </html>

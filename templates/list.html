@@ -10,13 +10,15 @@
 {% include "top2navbar.html" %}
 
 
-  <table border = 1>
+<div class="forcontent">
+  <table border="1", class="dataframe" >
     {% for  value in content_list %}
     <tr>
        <td> {{ value }} </td>
     </tr>
     {% endfor %}
  </table>
+</div>
 
 
 {% include "footer.html" %}

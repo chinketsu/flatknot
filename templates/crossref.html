@@ -2,13 +2,14 @@
 <html lang="en">
 {% include "header.html" %}
 <div class="header">
-       Cross-reference of flat knots and virtual knots
+       Crossref: flat and virtual knots
 </div>
 
 {% include "topnavbar.html" %}
 {% include "top2navbar.html" %}
 
     <body>
+        <div class="forcontent">
                     {% for table in tables %}
         <div class="onethird">
             <table>
@@ -19,6 +20,7 @@
             </table>
         </div>
                     {% endfor %}
+        </div>
 
 
 <div class="topnav">
