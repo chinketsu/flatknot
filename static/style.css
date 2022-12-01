@@ -62,21 +62,21 @@ embed {
   display: inline-block;
   font-size: 0.9em;
   letter-spacing: 2px;
-  word-spacing: 12px;
+  word-spacing: 10px;
 }
 
 
 
 .footer {
   border-radius: 0 0 10px 10px;
-  width:96%;
-  padding: 2%;
+  width:98%;
+  padding: 1%;
   text-align: left;
   background-color: #666666;
   color: white;
   display: inline-block;
-  font-size: 0.8em;
-  line-height: 2em;
+  font-size: 0.7em;
+  line-height: 1.5em;
   letter-spacing: 1px;
 }
 /* Create a top navigation bar with a black background color  */
