@@ -1,0 +1,25 @@
+invname,Definition
+gcode,0
+r3_orbit,All minimal diagrams that are R3 equivalent to the given diagram.
+r3_orbit_length,Number of minimal diagrams that are R3 equivalent to the given diagram.
+inv,The (orientation) reverse is given by changing the orientation of S^1.
+bar,The mirror image  is given by changing the orientation of Cater surface.
+invbar,The reversed mirror image is given by changing the orientation of S^1 and the orientation of Carter surface.
+diag_sym_type," 0 means not same as the original diagram. 1 means same as the original diagram. Listed in the order of  [inv, bar, invbar]."
+bsMtxNoSrt,The based matrix obtained directly from the diagram. 
+primMatrix,The based matrix obtained after elementary reduction.
+isPrim,If the based matrix obtained directly from the diagram is prime.
+phi,"Define phi_B to be the entries of columns
+in lower triangle under diagonal of based matrix B."
+phi_sym,Minimal phi for all based matrices of the flat knot up to symmetry.
+inv_phi,The minimal phi of all based matrices of the orientation reverse of the original flat knot.
+bar_phi,The minimal phi of all based matrices of the mirror image of the original flat knot.
+invbar_phi,The minimal phi of all based matrices of the reversed mirror image of the original flat knot.
+matrix_sym_type," 0 means not same as the original matrix. 1 means same as the original matrix. Listed in the order of  [inv, bar, invbar]."
+inPoly,The characteristic polynomial of the based matrix after deleting its first row and column.
+outPoly,The characteristic polynomial of the based matrix.
+arrowpoly,0
+cable_arr_poly,The arrow polynomial of 2 strand cable of the flat knot.
+alg_genus,Half of the minimal rank of all fillings. 
+fillings,0
+slice,If knot is slice.
