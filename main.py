@@ -24,6 +24,8 @@ acfiledict={'5':1,'6':1,'7':1,'8':1,'9':1,'10':4}
 list_num = ['3','4','5','6','7']
 aclist_num = ['5','6','7','8','9','10']
 
+noexist='Under construction. Coming soon...'
+
 diag_inv={
     'gcode': 'Gauss code',
     'r3_orbit': 'R3 orbit',
@@ -99,7 +101,11 @@ def acindex():
 
 @app.route('/inv/<invname>')
 def invpage(invname):
-    content_list=['We have not updated it yet. Sorry.']
+    content_list=[noexist]
+    df=pd.read_csv('./csv/inv.csv',dtype=str)
+    text=df.loc[df.invname==invname].iloc[0]['Definition']
+    if text !='0':
+        content_list.append(text)
     return render_template(
         'list.html',
         headname=all_dict[invname],
@@ -109,7 +115,7 @@ def invpage(invname):
 
 @app.route('/glossary')
 def glossary():
-    content_list=['We have not updated it yet. Sorry.']
+    content_list=[noexist]
     return render_template(
         'list.html',
         headname='Glossary',
@@ -119,7 +125,7 @@ def glossary():
 
 @app.route('/todo')
 def todo():
-    content_list=['We have not updated it yet. Sorry.']
+    content_list=[noexist]
     return render_template(
         'list.html',
         headname='Todo List',
@@ -129,7 +135,7 @@ def todo():
 
 @app.route('/conjecture')
 def conjecture():
-    content_list=['We have not updated it yet. Sorry.']
+    content_list=[noexist]
     return render_template(
         'list.html',
         headname='Conjecture List',
@@ -140,7 +146,7 @@ def conjecture():
 
 @app.route('/ref')
 def ref():
-    content_list=['We have not updated it yet. Sorry.']
+    content_list=[noexist]
     return render_template(
         'list.html',
         headname='Reference List',
