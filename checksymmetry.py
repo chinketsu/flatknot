@@ -579,5 +579,14 @@ def draw_arc(strFlat):
     textpiece.append(r'\end{tikzpicture}')
     return(' '.join(textpiece))
 
+
+def gcode2lyndon(gcode):
+    if len(gcode)>36:
+        gcode=int2let(gcode)
+    return gcode[0::2]+(''.join([gcode[i+1]
+                                for i in range(len(gcode))
+                                if gcode.startswith('U', i)]) )
+
+
 if __name__ == "__main__":
     pass
