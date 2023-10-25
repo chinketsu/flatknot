@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include "header.html" %}
+    <head>
+        <title> FlatKnotInfo: Flat knot {{knotname}} </title>
+        
+    </head>
 <div class="header">
         Table of flat knot invariants
 </div>
@@ -36,17 +40,17 @@ The R3 orbit of minmal crossing diagrams contains:
         </td></tr>       
     {% if inv!='Same' %}
         <tr><td>
-        The inv(K) is  <embed type="text/html" src="/diagram/{{inv}}" width=auto height=auto>
+        The reverse -K is  <embed type="text/html" src="/diagram/{{inv}}" width=auto height=auto>
         </td></tr>       
     {% endif %}
     {% if bar!='Same' %}
         <tr><td>
-        The bar(K) is  <embed type="text/html" src="/diagram/{{bar}}" width=auto height=auto>
+        The mirror image K* is  <embed type="text/html" src="/diagram/{{bar}}" width=auto height=auto>
         </td></tr>       
     {% endif %}
     {% if invbar!='Same' %}
         <tr><td>
-        The invbar(K) is
+        The reversed mirror image -K* is
         <embed type="text/html" src="/diagram/{{invbar}}" width=auto height=auto>
         </td></tr>      
     {% endif %}

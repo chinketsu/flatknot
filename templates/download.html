@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include "header.html" %}
-<title> FlatKnotInfo</title>
+<title> FlatKnotInfo:  data</title>
     <body>
 <div class="header">
-    How to cite
+    {{headname}}
           <!--Thank you for citing our website-->
 </div>
 {% include "topnavbar.html" %}
 {% include "top2navbar.html" %}
-{% include "citer.html" %}
+
+
+<div class="forcontent">
+  <table border="1", class="dataframe" >
+    {% for  value in content_list %}
+    <tr>
+       <td> {{ value }} </td>
+    </tr>
+    {% endfor %}
+ </table>
+</div>
+
 
 {% include "footer.html" %}
     </body>
