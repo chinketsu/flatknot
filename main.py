@@ -18,11 +18,11 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '0000'
 
-filedict={'3':1,'4':1,'5':1,'6':5,'7':93}
-acfiledict={'5':1,'6':1,'7':1,'8':1,'9':1,'10':4}
+filedict={'3':1,'4':1,'5':1,'6':5,'7':93, '8':2483}
+# acfiledict={'5':1,'6':1,'7':1,'8':1,'9':1,'10':4}
 
-list_num = ['3','4','5','6','7']
-aclist_num = ['5','6','7','8','9','10']
+list_num = ['3','4','5','6','7','8']
+# aclist_num = ['5','6','7','8','9','10']
 
 noexist='Under construction. Coming soon...'
 
@@ -30,10 +30,14 @@ diag_inv={
     'gcode': 'Gauss code',
     'r3_orbit': 'R3 orbit',
     'r3_orbit_length': 'R3 orbit length',
-    'inv': 'Gauss code of inv(K)',
-    'bar': 'Gauss code of bar(K)',
-    'invbar': 'Gauss code of invbar(K)',
-    'diag_sym_type': 'Diagrammatic symmetry type'}
+    'reverse': 'Gauss code of -K',
+    'mirror_img': 'Gauss code of K*',
+    'rev_mir_img': 'Gauss code of -K*',
+    'diag_sym_type': 'Diagrammatic symmetry type',
+    'vgenus': 'Flat genus of the diagram',
+    'is_cc':'If K is checkerboard colorable',
+    'is_ac':'If K is almost classical'
+    }
 
 matrix_inv={
     'bsMtxNoSrt':'Based matrix from Gauss code',
@@ -41,16 +45,19 @@ matrix_inv={
     'isPrim':'If based matrix primitive',
     'phi':'Phi of primitive based matrix',
     'phi_sym':'Phi over symmetry',
-    'inv_phi': 'Phi of inv(K)',
-    'bar_phi': 'Phi of bar(K)',
-    'invbar_phi': 'Phi of invbar(K)',
+    'inv_phi': 'Phi of -K',
+    'bar_phi': 'Phi of K*',
+    'invbar_phi': 'Phi of -K*',
     'matrix_sym_type': 'Symmetry type of based matrix'}
 
 
 poly_inv={
+    'uPoly':'u-polynomial', 
+    'jk_poly_normed':'Normalized Jones-Krushkal polynomial',
+    'en_poly_normed':'Enhanced Jones-Krushkal polynomial',
     'inPoly': 'Inner characteristic polynomial',
     'outPoly': 'Outer characteristic polynomial',
-    'arrowpoly': 'Arrow polynomial',
+    'arrowpoly': 'Flat arrow polynomial',
     'cable_arr_poly': '2-strand cable arrow polynomial'}
 
 concor_inv={
@@ -85,18 +92,18 @@ def index():
     )
 
 
-@app.route('/ac',methods=['GET','POST'])
-def acindex():
-    return render_template(
-        'acindex.html',
-        list_num=aclist_num,
-        list_num_len=len(aclist_num),
-        dict_inv=dict_inv,
-        # diag_inv=diag_inv,
-        # matrix_inv=matrix_inv,
-        # poly_inv=poly_inv,
-        # concor_inv=concor_inv,
-    )
+# @app.route('/ac',methods=['GET','POST'])
+# def acindex():
+    # return render_template(
+        # 'acindex.html',
+        # list_num=aclist_num,
+        # list_num_len=len(aclist_num),
+        # dict_inv=dict_inv,
+        # # diag_inv=diag_inv,
+        # # matrix_inv=matrix_inv,
+        # # poly_inv=poly_inv,
+        # # concor_inv=concor_inv,
+    # )
 
 
 @app.route('/inv/<invname>')
@@ -123,12 +130,12 @@ def glossary():
     )
 
 
-@app.route('/todo')
+@app.route('/accc')
 def todo():
     content_list=[noexist]
     return render_template(
-        'list.html',
-        headname='Todo List',
+        'download.html',
+        headname='Higher Crossing Flat Knot',
         content_list=content_list,
     )
 
@@ -289,109 +296,109 @@ def result_i(pagenum,numlist,invlist):
             )
 
 
-@app.route('/acresult',methods=['POST', 'GET'])
-def acresult():
-    num_list=[]
-    val_list=[]
-    if request.method == 'POST':
-        # result = request.form
-        for i in range(len(aclist_num)):
-            num_list.append(request.form.get('num%d' %i))
-        for invname in all_inv:
-            val_list.append(request.form.get(invname))
+# @app.route('/acresult',methods=['POST', 'GET'])
+# def acresult():
+    # num_list=[]
+    # val_list=[]
+    # if request.method == 'POST':
+        # # result = request.form
+        # for i in range(len(aclist_num)):
+            # num_list.append(request.form.get('num%d' %i))
+        # for invname in all_inv:
+            # val_list.append(request.form.get(invname))
 
-        num_list=[j for j in num_list if j is not None]
-        val_list=[j for j in val_list if j is not None]
-        if num_list==[]:
-            return '''
-    <h>Please input a crossing number!</h>
-    <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
-    <div><a href='/'> Go back</a></div>
-    '''
-        else:
-            morelink=False
-            dflst=[]
-            dfsize=0
-            pagenum=1
-            for crNum in num_list:
-                for fileNum in range(1,acfiledict[crNum]+1):
-                    in_path = './csv/ac_%s_%d.csv' % (crNum,fileNum)
-                    df= pd.read_csv(
-                        in_path,
-                        usecols=['namelink']+val_list,
-                        dtype=str)
-                    dfsize+=df.shape[0]
-                    dflst.append(df)
-                    if dfsize>=500:
-                        num_index=num_list.index(crNum)
-                        morelink=True
-                        pagenum=1
-                        return render_template(
-                            'actable.html',
-                            tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
-                                index=None,
-                                render_links=True,
-                                escape=False)],
-                            # titles=[],
-                            pagenum=pagenum,
-                            num_list=num_list[num_index:],
-                            val_list=val_list,
-                            morelink=morelink
-                        )
-            return render_template(
-                'actable.html',
-                tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
-                    index=None,
-                    render_links=True,
-                    escape=False)],
-                # titles=[],
-                pagenum=pagenum,
-                val_list=val_list,
-                num_list=num_list,
-                morelink=morelink
-            )
-
-
-
-
-
-@app.route('/acresult/<int:pagenum>/<numlist>/<invlist>')
-def acresult_i(pagenum,numlist,invlist):
-    morelink=True
-    num_list=numlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
-    if invlist=='[]':
-        val_list=[]
-    else:
-        val_list=invlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
-
-    if pagenum==0:
-        return redirect(f'/acresult/{acfiledict[num_list[0]]}/{num_list}/{val_list}')
-
-    if acfiledict[num_list[0]]<pagenum:
-        # pagenum=1
-        # num_list=num_list[1:]
-        if len(num_list)==1:
+        # num_list=[j for j in num_list if j is not None]
+        # val_list=[j for j in val_list if j is not None]
+        # if num_list==[]:
+            # return '''
+    # <h>Please input a crossing number!</h>
+    # <div><a href='/calculator'> Check the flat knot diagram calculator !</a></div>
+    # <div><a href='/'> Go back</a></div>
+    # '''
+        # else:
             # morelink=False
-            return redirect(f'/acresult/{acfiledict[num_list[0]]}/{num_list}/{val_list}')
-        else:
-            num_list=num_list[1:]
-            pagenum=acfiledict[num_list[0]]-pagenum
-            return redirect(f'/acresult/{pagenum}/{num_list}/{val_list}')
+            # dflst=[]
+            # dfsize=0
+            # pagenum=1
+            # for crNum in num_list:
+                # for fileNum in range(1,acfiledict[crNum]+1):
+                    # in_path = './csv/ac_%s_%d.csv' % (crNum,fileNum)
+                    # df= pd.read_csv(
+                        # in_path,
+                        # usecols=['namelink']+val_list,
+                        # dtype=str)
+                    # dfsize+=df.shape[0]
+                    # dflst.append(df)
+                    # if dfsize>=500:
+                        # num_index=num_list.index(crNum)
+                        # morelink=True
+                        # pagenum=1
+                        # return render_template(
+                            # 'actable.html',
+                            # tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
+                                # index=None,
+                                # render_links=True,
+                                # escape=False)],
+                            # # titles=[],
+                            # pagenum=pagenum,
+                            # num_list=num_list[num_index:],
+                            # val_list=val_list,
+                            # morelink=morelink
+                        # )
+            # return render_template(
+                # 'actable.html',
+                # tables=[pd.concat(dflst)[['namelink']+val_list].to_html(
+                    # index=None,
+                    # render_links=True,
+                    # escape=False)],
+                # # titles=[],
+                # pagenum=pagenum,
+                # val_list=val_list,
+                # num_list=num_list,
+                # morelink=morelink
+            # )
 
-    morelink=acfiledict[num_list[0]]>pagenum or len(num_list)>1
 
-    in_path = './csv/ac_%s_%d.csv' % (num_list[0],pagenum)
-    data= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
-    return render_template('actable.html',
-            tables=[data[['namelink']+val_list].to_html(
-                index=None,
-                render_links=True,
-                escape=False)],
-            pagenum=pagenum,
-            num_list=num_list,
-            val_list=val_list,
-            morelink=morelink
-            )
+
+
+
+# @app.route('/acresult/<int:pagenum>/<numlist>/<invlist>')
+# def acresult_i(pagenum,numlist,invlist):
+    # morelink=True
+    # num_list=numlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
+    # if invlist=='[]':
+        # val_list=[]
+    # else:
+        # val_list=invlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
+
+    # if pagenum==0:
+        # return redirect(f'/acresult/{acfiledict[num_list[0]]}/{num_list}/{val_list}')
+
+    # if acfiledict[num_list[0]]<pagenum:
+        # # pagenum=1
+        # # num_list=num_list[1:]
+        # if len(num_list)==1:
+            # # morelink=False
+            # return redirect(f'/acresult/{acfiledict[num_list[0]]}/{num_list}/{val_list}')
+        # else:
+            # num_list=num_list[1:]
+            # pagenum=acfiledict[num_list[0]]-pagenum
+            # return redirect(f'/acresult/{pagenum}/{num_list}/{val_list}')
+
+    # morelink=acfiledict[num_list[0]]>pagenum or len(num_list)>1
+
+    # in_path = './csv/ac_%s_%d.csv' % (num_list[0],pagenum)
+    # data= pd.read_csv(in_path,usecols=['namelink']+val_list, dtype=str)
+    # return render_template('actable.html',
+            # tables=[data[['namelink']+val_list].to_html(
+                # index=None,
+                # render_links=True,
+                # escape=False)],
+            # pagenum=pagenum,
+            # num_list=num_list,
+            # val_list=val_list,
+            # morelink=morelink
+            # )
 
 
 @app.route('/download/<numlist>/<invlist>')
@@ -435,7 +442,7 @@ def flatknot(knotname):
             knotname=knotname,
             r3_orbit='',
             content='Trivial flat knot.')
-    elif int(knotname[0])>7:
+    elif int(knotname[0])>8:
         return redirect('/error')
     else:
         rownum=(int(knotname[2:])-1) % 500 +1
@@ -444,12 +451,14 @@ def flatknot(knotname):
         df= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
 
         df=df[df['name']==knotname]
-        content='Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
-            '\n'+'Flat knots (up to 7 crossings) with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
-            'Arrow polynomial of the knot is: '+df.iloc[0]['arrowpoly'] +'\n'+\
-            'Flat knots (up to 7 crossings) with same arrow polynomial are :'+df.iloc[0]['same_arrowpoly']+'\n'+\
-             'Outer characteristic polynomial of the knot is: '+\
-             df.iloc[0]['outPoly'] +'\n'+'Flat knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outPoly']+'\n'
+        content=''
+        if int(knotname[0])<8:
+            content+='Min(phi) over symmetries of the knot is: '+df.iloc[0]['phi_sym'] +\
+                '\n'+'Flat knots (up to 7 crossings) with same phi are :'+df.iloc[0]['same_phi']+'\n'+\
+                'Arrow polynomial of the knot is: '+df.iloc[0]['arrowpoly'] +'\n'+\
+                'Flat knots (up to 7 crossings) with same arrow polynomial are :'+df.iloc[0]['same_arrowpoly']+'\n'+\
+                 'Outer characteristic polynomial of the knot is: '+df.iloc[0]['outPoly']+'\n'+\
+                 'Flat knots (up to 7 crossings) with same outer characteristic polynomial are :'+df.iloc[0]['same_outPoly']+'\n'
         if int(knotname[0])<7:
             content+='2-strand cable arrow polynomial of the knot is: '+df.iloc[0]['cable_arr_poly']\
             +'\n'+'Flat knots (up to 6 crossings) with same 2-strand cable arrow polynomial are :'+df.iloc[0]['same_cable_arr_poly']\
@@ -466,9 +475,9 @@ def flatknot(knotname):
             knotname=knotname,
             r3_orbit=df.iloc[0]['r3_orbit'],
             diag_sym_type=df.iloc[0]['diag_sym_type'],
-            inv=df.iloc[0]['inv'],
-            bar=df.iloc[0]['bar'],
-            invbar=df.iloc[0]['invbar'],
+            inv=df.iloc[0]['reverse'],
+            bar=df.iloc[0]['mirror_img'],
+            invbar=df.iloc[0]['rev_mir_img'],
             gcode=gcode,
             fillings=fillings,
             content=content,
@@ -478,65 +487,65 @@ def flatknot(knotname):
                     escape=False)])
 
 
-@app.route('/acflatknot/<knotname>')
-def acflatknot(knotname):
-    if knotname=='0':
-        return render_template(
-            'flatknot.html',
-            knotname=knotname,
-            r3_orbit='',
-            content='You are checking the trivial flat knot. All the invariants are trivial as well.',
-            )
-    if knotname[:2]=='10':
-        crNum=10
-        # rownum=int(knotname[3:]) % 500
-        rownum=(int(knotname[3:])-1)% 500 +1
-        filenum=int((int(knotname[3:])-rownum)/500)+1
-    else:
-        crNum=int(knotname[0])
-        # rownum=int(knotname[2:]) % 500
-        rownum=( int(knotname[2:])-1 ) % 500 +1
-        filenum=int((int(knotname[2:])-rownum)/500)+1
-    in_path2 = './csv/ac_%d_%d.csv' % (crNum,filenum)
-    df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
-    df=df2[df2['name']==knotname]
-    fillings=eval(df.iloc[0]['fillings'])
-    if len(fillings)>10:
-        fillings=fillings[:10]
-    gcode=df.iloc[0]['gcode']
-    data=df[all_inv].transpose().reset_index().rename(columns={0:'value'})
-    data['invariant']=data['index'].apply(lambda x: all_dict[x])
-    data=data[['invariant','value']]
-    if knotname[:2]=='10':
-        return render_template(
-            'acflatknot.html',
-            knotname=knotname,
-            r3_orbit='',
-            diag_sym_type='',
-            inv='',
-            bar='',
-            invbar='',
-            gcode=gcode,
-            fillings=fillings,
-            tables=[data.to_html(
-                    index=None,
-                    render_links=True,
-                    escape=False)])
-    return render_template(
-        'acflatknot.html',
-        knotname=knotname,
-        r3_orbit=df2.iloc[0]['r3_orbit'],
-        diag_sym_type=df2.iloc[0]['diag_sym_type'],
-        inv=df2.iloc[0]['inv'],
-        bar=df2.iloc[0]['bar'],
-        invbar=df2.iloc[0]['invbar'],
-        gcode=gcode,
-        fillings=fillings,
-        tables=[data.to_html(
-                index=None,
-                render_links=True,
-                escape=False)],
-           )
+# @app.route('/acflatknot/<knotname>')
+# def acflatknot(knotname):
+    # if knotname=='0':
+        # return render_template(
+            # 'flatknot.html',
+            # knotname=knotname,
+            # r3_orbit='',
+            # content='You are checking the trivial flat knot. All the invariants are trivial as well.',
+            # )
+    # if knotname[:2]=='10':
+        # crNum=10
+        # # rownum=int(knotname[3:]) % 500
+        # rownum=(int(knotname[3:])-1)% 500 +1
+        # filenum=int((int(knotname[3:])-rownum)/500)+1
+    # else:
+        # crNum=int(knotname[0])
+        # # rownum=int(knotname[2:]) % 500
+        # rownum=( int(knotname[2:])-1 ) % 500 +1
+        # filenum=int((int(knotname[2:])-rownum)/500)+1
+    # in_path2 = './csv/ac_%d_%d.csv' % (crNum,filenum)
+    # df2= pd.read_csv(in_path2, dtype=str, skiprows=range(1,rownum), nrows=2)
+    # df=df2[df2['name']==knotname]
+    # fillings=eval(df.iloc[0]['fillings'])
+    # if len(fillings)>10:
+        # fillings=fillings[:10]
+    # gcode=df.iloc[0]['gcode']
+    # data=df[all_inv].transpose().reset_index().rename(columns={0:'value'})
+    # data['invariant']=data['index'].apply(lambda x: all_dict[x])
+    # data=data[['invariant','value']]
+    # if knotname[:2]=='10':
+        # return render_template(
+            # 'acflatknot.html',
+            # knotname=knotname,
+            # r3_orbit='',
+            # diag_sym_type='',
+            # inv='',
+            # bar='',
+            # invbar='',
+            # gcode=gcode,
+            # fillings=fillings,
+            # tables=[data.to_html(
+                    # index=None,
+                    # render_links=True,
+                    # escape=False)])
+    # return render_template(
+        # 'acflatknot.html',
+        # knotname=knotname,
+        # r3_orbit=df2.iloc[0]['r3_orbit'],
+        # diag_sym_type=df2.iloc[0]['diag_sym_type'],
+        # inv=df2.iloc[0]['inv'],
+        # bar=df2.iloc[0]['bar'],
+        # invbar=df2.iloc[0]['invbar'],
+        # gcode=gcode,
+        # fillings=fillings,
+        # tables=[data.to_html(
+                # index=None,
+                # render_links=True,
+                # escape=False)],
+           # )
 
 
 # @app.route('/calculator0', methods=['POST', 'GET'])
@@ -566,9 +575,19 @@ def acflatknot(knotname):
 
 
 def findgcode(gcode):
-    if '8' in gcode:
-        return 'Currently cannot search for 8 crossing or larger'
+    if '9' in gcode:
+        return 'Currently cannot search for 9 crossing or larger'
     crNum=int(len(gcode)/4)
+    if '7' in gcode:
+        lyndon=checksymmetry.gcode2lyndon(gcode)
+        checklstfile="./csv/checklst%d.csv" %crNum
+        checklst=pd.read_csv(checklstfile,dtype=str)['0'].to_list()
+        for i in range(len(checklst)):
+            if lyndon<=checklst[i]:
+                out_path = './csv/fk_%d_%d.csv' % (crNum,i+1)
+                df=pd.read_csv(out_path,dtype=str,usecols=['name','gcode'])
+                return df[df.gcode==gcode].iloc[0]['name']
+        return ''
     pdlist=[]
     for i in range(1,filedict['%d' %crNum]+1):
         out_path = './csv/fk_%d_%d.csv' % (crNum,i)
@@ -648,7 +667,7 @@ def calculatorpage2(question):
                     + '.\n Its minimal sibling is '\
                     + minsibling+'.\n Its R3 orbit is '\
                     + str(r3set)
-                todraw=[pretty_mingcode,minsibling]
+                todraw=[gcode,pretty_mingcode,minsibling]
                 r3todraw=list(r3set)
                 name=findgcode(minsibling)
             else:
