@@ -269,7 +269,7 @@ def result_i(pagenum,numlist,invlist):
         val_list=invlist.replace('[','').replace(']','').replace("'","").replace(" ","").split(',')
 
     if pagenum==0:
-        return redirect(f'/result/{filedict[num_list[0]]}/{num_list}/{val_list}')
+        return redirect(f'/result/{filedict[num_list[-1]]}/{num_list[-1:]}/{val_list}')
 
     if filedict[num_list[0]]<pagenum:
         # pagenum=1
@@ -421,17 +421,31 @@ def citeus():
     return render_template( 'citeus.html')
 
 
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error.html'), 404
+
+
+
+
+
+
 @app.route('/error')
 def hello():
-    return '''
-    <h>Hey, it seems like you are checking something new</h>
-    <h>Or your input is not formatted.</h>
-    <h>Please try again.</h>
-    <h>Or contact me and I will calculate for you.</h>
-    <div><a href='/'> Go to the Main Page</a></div>
-    <div><a href='/calculator'> Go to Calculator</a></div>
-    <div><a href='/#contact'>Contact us</a></div>
-    '''
+    content_list=[
+    "Hey, it seems like you are checking something new, or your input is not formatted.",
+    "Please try again, or contact me and I will calculate for you."
+            ]
+    return render_template(
+        'list.html',
+        headname='Opps',
+        content_list=content_list,
+    )
+
+
+
 
 
 @app.route('/flatknot/<knotname>')
@@ -696,4 +710,5 @@ def calculatorpage2(question):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
+    # app.run(debug=True)
