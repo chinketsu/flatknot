@@ -9,7 +9,8 @@ export FLASK_APP=main.py
 export FLASK_ENV=development
 flask run
 """
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
+import werkzeug
 import pandas as pd
 import checksymmetry
 import draw_filling
@@ -422,13 +423,13 @@ def citeus():
 
 
 
-
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('error.html'), 404
+    return redirect('/error')
 
-
-
+@app.errorhandler(werkzeug.exceptions.HTTPException)
+def internal_error(error):
+    return redirect('/error')
 
 
 
