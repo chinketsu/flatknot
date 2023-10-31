@@ -580,7 +580,8 @@ def draw_arc(strFlat):
     return(' '.join(textpiece))
 
 
-def gcode2lyndon(gcode):
+def gcode2lyndon(gcode0):
+    gcode=reorderforlyn(gcode0)
     if len(gcode)>36:
         gcode=int2let(gcode)
     return gcode[0::2]+(''.join([gcode[i+1]
